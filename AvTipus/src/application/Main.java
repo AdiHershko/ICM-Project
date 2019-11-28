@@ -18,7 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-//very important comment
+//very important comment!!
 public class Main extends Application {
 	Pane root;
 	Stage stage;
