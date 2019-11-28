@@ -69,7 +69,7 @@ public class DataBaseController {
 		String query = "insert into requests (requests.name,requests.system,requests.desc,requests.change,requests.status,requests.handler)"
 				+ " values (?,?,?,?,?,?);";
 			arr=new ArrayList<>(Arrays.asList(txt.split(",")));
-			if (arr.size()!=6){
+			if (arr.size()!=6||Integer.parseInt(arr.get(1))>2||Integer.parseInt(arr.get(1))<0){
 				System.out.println("Wrong parameters");
 				throw new Exception("Wrong parameters");
 			}

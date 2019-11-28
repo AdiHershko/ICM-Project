@@ -43,6 +43,10 @@ public class Request {
 	public String getDesc() {
 		return desc;
 	}
+	public int getSystemInt()
+	{
+		return system;
+	}
 
 
 	public String getChange() {

@@ -126,9 +126,9 @@ public class Main extends Application {
 
     }
 
-    public void setTable()
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setTable()
     {
-    	ObservableList<Request> o = DataBaseController.getTable();
 		TableColumn<Request,Integer> idColumn = new TableColumn<>("id");
 		idColumn.setCellValueFactory(new PropertyValueFactory("id"));
 		TableColumn<Request,String> nameColumn = new TableColumn<>("name");
@@ -145,6 +145,7 @@ public class Main extends Application {
     public void refreshTable()
     {
     	ObservableList<Request> ol = DataBaseController.getTable();
+    	if (ol.get(2).getSystemInt()<2||ol.get(2).getSystemInt()<0) return;
 		table.setItems(ol);
     }
 
