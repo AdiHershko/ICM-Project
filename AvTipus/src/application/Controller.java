@@ -123,15 +123,16 @@ public class Controller {
 		Request r;
     	try {
     		r = table.getSelectionModel().getSelectedItem();
+    		getDescArea().setText(r.getDesc());
+        	getChangesArea().setText(r.getChange());
+        	getHandlerLabel().setText(r.getHandler());
+        	getChangeText().setText("");
     	}
     	catch (Exception e)
     	{
     		return;
     	}
-    	getDescArea().setText(r.getDesc());
-    	getChangesArea().setText(r.getChange());
-    	getHandlerLabel().setText(r.getHandler());
-    	getChangeText().setText("");
+
     }
 
 	@FXML

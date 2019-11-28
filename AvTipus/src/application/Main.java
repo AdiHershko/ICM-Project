@@ -18,7 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-
+//very important comment
 public class Main extends Application {
 	Pane root;
 	Stage stage;
@@ -145,15 +145,11 @@ public class Main extends Application {
     public void refreshTable()
     {
     	ObservableList<Request> ol = DataBaseController.getTable();
-    	if (ol.get(2).getSystemInt()<2||ol.get(2).getSystemInt()<0) return;
+    	if (ol.size()!=0) {
+    		if ((ol.get(2).getSystemInt()<2||ol.get(2).getSystemInt()<0)) return;
+    	}
 		table.setItems(ol);
     }
-
-
-
-
-
-
 
 	public static void main(String[] args) {
 		launch(args);
