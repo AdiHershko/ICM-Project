@@ -1,16 +1,22 @@
 package application;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class Controller {
 
+	public static Controller _ins;
 	@FXML
 	private Pane pane;
 
@@ -88,6 +94,10 @@ public class Controller {
 
 	@FXML
 	private Button SearchButton;
+
+	public void initialize(){
+		Controller._ins = this;
+	}
 
 	public TextArea getStatusArea() {
 		return statusArea;
@@ -168,7 +178,7 @@ public class Controller {
 			getStatusArea().setText(r.getStatus());
 			getIdLabel().setText(Integer.toString(r.getId()));
 
-			
+
 			getChangesEditButton().setVisible(true);
 			getDescEditButton().setVisible(true);
 			getStatusEditButton().setVisible(true);
@@ -201,5 +211,163 @@ public class Controller {
 		getStatusArea().setEditable(true);
 		getSaveStatusButton().setVisible(true);
 	}
+
+	@FXML
+	public void addToTable()
+	{
+		try {
+			DataBaseController.addToDB(gettAddText().getText().toString());
+			refreshTable();
+			gettAddText().setText("");
+		} catch (Exception e1) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Wrong parameters!");
+			alert.setContentText("Please enter 6 parameters:\n" + "string,INT,string,string,string,string\n"
+					+ "The int is 0-5\n" + "The strings are up to 1000 characters");
+			alert.show();
+		}
+	}
+
+	@FXML
+	public void saveChangesChanges()
+	{
+		Request r;
+		r = table.getSelectionModel().getSelectedItem();
+		int i = table.getSelectionModel().getSelectedIndex();
+		try {
+			String text = getChangesArea().getText();
+			if (text.length() > 1000)
+				throw new Exception("Too long text");
+			r.setChange(text);
+		} catch (Exception e2) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR!");
+			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
+			alert.show();
+			e2.printStackTrace();
+			return;
+		}
+		DataBaseController.changeChanges(r.getId(), r.getChange());
+		refreshTable();
+		table.getSelectionModel().select(i);
+	}
+
+	@FXML
+	public void saveDescChanges()
+	{
+		Request r;
+		r = table.getSelectionModel().getSelectedItem();
+		int i = table.getSelectionModel().getSelectedIndex();
+		try {
+			String text = getDescArea().getText();
+			if (text.length() > 1000)
+				throw new Exception("Too long text");
+			r.setDesc(text);
+		} catch (Exception e2) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR!");
+			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
+			alert.show();
+			e2.printStackTrace();
+			return;
+		}
+		DataBaseController.changeDescription(r.getId(), r.getDesc());
+		refreshTable();
+		table.getSelectionModel().select(i);
+		getDescArea().setEditable(false);
+		getSaveDescButton().setVisible(false);
+	}
+
+	@FXML
+	public void saveChangeStatus()
+	{
+		Request r;
+		r = table.getSelectionModel().getSelectedItem();
+		int i = table.getSelectionModel().getSelectedIndex();
+		try {
+			String text = getStatusArea().getText();
+			if (text.length() > 100)
+				throw new Exception("Too long text");
+			r.setStatus(text);
+		} catch (Exception e2) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR!");
+			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
+			alert.show();
+			e2.printStackTrace();
+			return;
+		}
+		DataBaseController.changeStatus(r.getId(), r.getStatus());
+		refreshTable();
+		table.getSelectionModel().select(i);
+		getStatusArea().setEditable(false);
+		getSaveStatusButton().setVisible(false);
+	}
+
+	public void refreshTable() {
+		if (UserConsole._init.isSerach == false) {
+			ObservableList<Request> ol = DataBaseController.getTable();
+			table.setItems(ol);
+		}
+		if (UserConsole._init.isSerach) {
+			ObservableList<Request> ol = DataBaseController.getTableWithID(UserConsole._init.searchid);
+			table.setItems(ol);
+		}
+	}
+
+	@FXML
+	public void searchTable()
+	{
+		try {
+			String text = getSerachFeild().getText();
+			if (text.equals("*")) {
+				UserConsole._init.isSerach = false;
+				//refreshTable();
+			} else {
+				int id = Integer.parseUnsignedInt(text);
+				UserConsole._init.isSerach = true;
+				UserConsole._init.searchid = id;
+				refreshTable();
+			}
+			getDescArea().setText("");
+			getChangesArea().setText("");
+			getHandlerLabel().setText("");
+			getStatusArea().setText("");
+			getIdLabel().setText("");
+
+			getChangesEditButton().setVisible(false);
+			getDescEditButton().setVisible(false);
+			getStatusEditButton().setVisible(false);
+
+			getSaveDescButton().setVisible(false);
+			getSaveChangesButton().setVisible(false);
+			getSaveStatusButton().setVisible(false);
+			getDescArea().setEditable(false);
+			getChangesArea().setEditable(false);
+			getStatusArea().setEditable(false);
+		} catch (Exception e1) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR!");
+			alert.setContentText("You didn't enter a number");
+			alert.show();
+			return;
+		}
+	}
+
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setTable() {
+		TableColumn<Request, Integer> idColumn = new TableColumn<>("Request ID");
+		idColumn.setCellValueFactory(new PropertyValueFactory("id"));
+		TableColumn<Request, String> nameColumn = new TableColumn<>("Requestor Name");
+		nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
+		TableColumn<Request, String> systemColumn = new TableColumn<>("System");
+		systemColumn.setCellValueFactory(new PropertyValueFactory("system"));
+		TableColumn<Request, String> statusColumn = new TableColumn<>("Status");
+		statusColumn.setCellValueFactory(new PropertyValueFactory("status"));
+		table = (TableView<Request>) getTable();
+		table.getColumns().addAll(idColumn, nameColumn, systemColumn, statusColumn);
+	}
+
 
 }
