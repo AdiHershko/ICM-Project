@@ -168,6 +168,10 @@ public class Controller {
 			getStatusArea().setText(r.getStatus());
 			getIdLabel().setText(Integer.toString(r.getId()));
 
+			
+			getChangesEditButton().setVisible(true);
+			getDescEditButton().setVisible(true);
+			getStatusEditButton().setVisible(true);
 			getSaveDescButton().setVisible(false);
 			getSaveChangesButton().setVisible(false);
 			getSaveStatusButton().setVisible(false);

@@ -15,14 +15,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class Main extends Application {
 	Pane root;
 	Stage stage;
 	Controller c;
 	TableView<Request> table;
+
+	boolean isSerach = false;
+	int searchid = 0;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -47,17 +48,39 @@ public class Main extends Application {
 		c.getDescArea().setWrapText(true);
 		c.getChangesArea().setWrapText(true);
 
+		c.getChangesEditButton().setVisible(false);
+		c.getDescEditButton().setVisible(false);
+		c.getStatusEditButton().setVisible(false);
+
 		Button search = c.getSearchButton();
 		search.setOnAction(e -> {
 			try {
 				String text = c.getSerachFeild().getText();
 				if (text.equals("*")) {
+					isSerach = false;
+					refreshTable();
+				} else {
+					int id = Integer.parseUnsignedInt(text);
+					isSerach = true;
+					searchid = id;
 					refreshTable();
 				}
-				else {
-					int id = Integer.parseUnsignedInt(text);
-					refreshTableWithID(id);
-				}
+				c.getDescArea().setText("");
+				c.getChangesArea().setText("");
+				c.getHandlerLabel().setText("");
+				c.getStatusArea().setText("");
+				c.getIdLabel().setText("");
+
+				c.getChangesEditButton().setVisible(false);
+				c.getDescEditButton().setVisible(false);
+				c.getStatusEditButton().setVisible(false);
+
+				c.getSaveDescButton().setVisible(false);
+				c.getSaveChangesButton().setVisible(false);
+				c.getSaveStatusButton().setVisible(false);
+				c.getDescArea().setEditable(false);
+				c.getChangesArea().setEditable(false);
+				c.getStatusArea().setEditable(false);
 			} catch (Exception e1) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("ERROR!");
@@ -171,13 +194,14 @@ public class Main extends Application {
 	}
 
 	public void refreshTable() {
-		ObservableList<Request> ol = DataBaseController.getTable();
-		table.setItems(ol);
-	}
-
-	public void refreshTableWithID(int id) {
-		ObservableList<Request> ol = DataBaseController.getTableWithID(id);
-		table.setItems(ol);
+		if (isSerach == false) {
+			ObservableList<Request> ol = DataBaseController.getTable();
+			table.setItems(ol);
+		}
+		if (isSerach) {
+			ObservableList<Request> ol = DataBaseController.getTableWithID(searchid);
+			table.setItems(ol);
+		}
 	}
 
 	public static void main(String[] args) {
