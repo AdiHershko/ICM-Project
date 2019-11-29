@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 
-public class Main extends Application {
+public class UserConsole extends Application {
 	Pane root;
 	Stage stage;
 	Controller c;
@@ -204,7 +204,4 @@ public class Main extends Application {
 		}
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
 }
