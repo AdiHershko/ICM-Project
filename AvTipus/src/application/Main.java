@@ -46,7 +46,7 @@ public class Main extends Application {
 
 		c.getDescArea().setWrapText(true);
 		c.getChangesArea().setWrapText(true);
-		
+
 		Button search = c.getSearchButton();
 		search.setOnAction(e -> {
 			try {
@@ -80,6 +80,7 @@ public class Main extends Application {
 		saveDesc.setOnAction(e -> {
 			Request r;
 			r = table.getSelectionModel().getSelectedItem();
+			int i = table.getSelectionModel().getSelectedIndex();
 			try {
 				String text = c.getDescArea().getText();
 				if (text.length() > 1000)
@@ -95,6 +96,7 @@ public class Main extends Application {
 			}
 			DataBaseController.changeDescription(r.getId(), r.getDesc());
 			refreshTable();
+			table.getSelectionModel().select(i);
 			c.getDescArea().setEditable(false);
 			c.getSaveDescButton().setVisible(false);
 		});
@@ -103,6 +105,7 @@ public class Main extends Application {
 		saveChanges.setOnAction(e -> {
 			Request r;
 			r = table.getSelectionModel().getSelectedItem();
+			int i = table.getSelectionModel().getSelectedIndex();
 			try {
 				String text = c.getChangesArea().getText();
 				if (text.length() > 1000)
@@ -118,14 +121,14 @@ public class Main extends Application {
 			}
 			DataBaseController.changeChanges(r.getId(), r.getChange());
 			refreshTable();
-			c.getChangesArea().setEditable(false);
-			c.getSaveChangesButton().setVisible(false);
+			table.getSelectionModel().select(i);
 		});
 
 		Button saveStatus = c.getSaveStatusButton();
 		saveStatus.setOnAction(e -> {
 			Request r;
 			r = table.getSelectionModel().getSelectedItem();
+			int i = table.getSelectionModel().getSelectedIndex();
 			try {
 				String text = c.getStatusArea().getText();
 				if (text.length() > 100)
@@ -141,6 +144,7 @@ public class Main extends Application {
 			}
 			DataBaseController.changeStatus(r.getId(), r.getStatus());
 			refreshTable();
+			table.getSelectionModel().select(i);
 			c.getStatusArea().setEditable(false);
 			c.getSaveStatusButton().setVisible(false);
 		});
