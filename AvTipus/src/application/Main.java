@@ -50,8 +50,14 @@ public class Main extends Application {
 		Button search = c.getSearchButton();
 		search.setOnAction(e -> {
 			try {
-				int id = Integer.parseInt(c.getSerachFeild().getText());
-				refreshTableWithID(id);
+				String text = c.getSerachFeild().getText();
+				if (text.equals("*")) {
+					refreshTable();
+				}
+				else {
+					int id = Integer.parseUnsignedInt(text);
+					refreshTableWithID(id);
+				}
 			} catch (Exception e1) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("ERROR!");
