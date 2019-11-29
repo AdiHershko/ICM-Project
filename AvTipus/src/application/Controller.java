@@ -11,144 +11,191 @@ import javafx.scene.layout.Pane;
 
 public class Controller {
 
-
-
 	@FXML
-	private Button button;
+	private Pane pane;
+
 	@FXML
 	private TableView<Request> table;
+
+	public Label getIdLabel() {
+		return idLabel;
+	}
+
+	public void setIdLabel(Label idLabel) {
+		this.idLabel = idLabel;
+	}
+
+	public TextField getSerachFeild() {
+		return serachFeild;
+	}
+
+	public void setSerachFeild(TextField serachFeild) {
+		this.serachFeild = serachFeild;
+	}
+
+	public Button getSearchButton() {
+		return SearchButton;
+	}
+
+	public void setSearchButton(Button searchButton) {
+		SearchButton = searchButton;
+	}
+
 	@FXML
 	private Button addButton;
+
 	@FXML
 	private TextField addText;
-	@FXML
-	private TextField changeText;
-	@FXML
-	private Button changeButton;
+
 	@FXML
 	private Pane requestPane;
+
 	@FXML
 	private TextArea descArea;
+
 	@FXML
 	private TextArea changesArea;
+
 	@FXML
 	private Label handlerLabel;
+
 	@FXML
 	private Button descEditButton;
+
 	@FXML
 	private Button changesEditButton;
+
 	@FXML
 	private Button saveDescButton;
+
 	@FXML
 	private Button saveChangesButton;
 
+	@FXML
+	private TextArea statusArea;
 
-	public Button getDescEditButton()
-	{
+	@FXML
+	private Button statusEditButton;
+
+	@FXML
+	private Button saveStatusButton;
+
+	@FXML
+	private Label idLabel;
+
+	@FXML
+	private TextField serachFeild;
+
+	@FXML
+	private Button SearchButton;
+
+	public TextArea getStatusArea() {
+		return statusArea;
+	}
+
+	public void setStatusArea(TextArea statusArea) {
+		this.statusArea = statusArea;
+	}
+
+	public Button getStatusEditButton() {
+		return statusEditButton;
+	}
+
+	public void setStatusEditButton(Button statusEditButton) {
+		this.statusEditButton = statusEditButton;
+	}
+
+	public Button getSaveStatusButton() {
+		return saveStatusButton;
+	}
+
+	public void setSaveStatusButton(Button saveStatusButton) {
+		this.saveStatusButton = saveStatusButton;
+	}
+
+	public Button getDescEditButton() {
 		return descEditButton;
 	}
 
-	public Button getChangesEditButton()
-	{
+	public Button getChangesEditButton() {
 		return changesEditButton;
 	}
 
-	public Button getSaveDescButton()
-	{
+	public Button getSaveDescButton() {
 		return saveDescButton;
 	}
 
-	public Button getSaveChangesButton()
-	{
+	public Button getSaveChangesButton() {
 		return saveChangesButton;
 	}
 
-	public Label getHandlerLabel()
-	{
+	public Label getHandlerLabel() {
 		return handlerLabel;
 	}
-	public TextArea getChangesArea()
-	{
+
+	public TextArea getChangesArea() {
 		return changesArea;
 	}
-	public TextArea getDescArea()
-	{
+
+	public TextArea getDescArea() {
 		return descArea;
 	}
 
-	public Pane getRequestPane()
-	{
+	public Pane getRequestPane() {
 		return requestPane;
 	}
 
-
-
-	public TextField getChangeText()
-	{
-		return changeText;
-	}
-
-	public Button getChangeButton()
-	{
-		return changeButton;
-	}
-
-
-	public TextField gettAddText()
-	{
+	public TextField gettAddText() {
 		return addText;
 	}
 
-	public Button getAddButton()
-	{
+	public Button getAddButton() {
 		return addButton;
 	}
 
-	public TableView<?> getTable()
-	{
+	public TableView<?> getTable() {
 		return table;
 	}
 
+	@FXML
+	public void showRequest(MouseEvent event) {
+		Request r;
+		try {
+			r = table.getSelectionModel().getSelectedItem();
+			getDescArea().setText(r.getDesc());
+			getChangesArea().setText(r.getChange());
+			getHandlerLabel().setText(r.getHandler());
+			getStatusArea().setText(r.getStatus());
+			getIdLabel().setText(Integer.toString(r.getId()));
 
+			getSaveDescButton().setVisible(false);
+			getSaveChangesButton().setVisible(false);
+			getSaveStatusButton().setVisible(false);
+			getDescArea().setEditable(false);
+			getChangesArea().setEditable(false);
+			getStatusArea().setEditable(false);
+		} catch (Exception e) {
+			return;
+		}
 
-
-	public Button getButton()
-	{
-		return button;
 	}
 
 	@FXML
-    public void showRequest(MouseEvent event)
-    {
-		Request r;
-    	try {
-    		r = table.getSelectionModel().getSelectedItem();
-    		getDescArea().setText(r.getDesc());
-        	getChangesArea().setText(r.getChange());
-        	getHandlerLabel().setText(r.getHandler());
-        	getChangeText().setText("");
-    	}
-    	catch (Exception e)
-    	{
-    		return;
-    	}
-
-    }
-
-	@FXML
-	public void editDesc()
-	{
+	public void editDesc() {
 		getDescArea().setEditable(true);
 		getSaveDescButton().setVisible(true);
 	}
 
 	@FXML
-	public void editChanges()
-	{
+	public void editChanges() {
 		getChangesArea().setEditable(true);
 		getSaveChangesButton().setVisible(true);
 	}
 
-
+	@FXML
+	void editStatus() {
+		getStatusArea().setEditable(true);
+		getSaveStatusButton().setVisible(true);
+	}
 
 }

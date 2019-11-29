@@ -18,81 +18,74 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-//very important comment!!
 public class Main extends Application {
 	Pane root;
 	Stage stage;
 	Controller c;
 	TableView<Request> table;
-	Media m = new Media(Main.class.getResource("alert.mp3").toExternalForm());
-	MediaPlayer mp = new MediaPlayer(m);
-    @Override
-    public void start(Stage stage) throws Exception {
-    	this.stage=stage;
-		try { //loading fxml file
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		this.stage = stage;
+		try { // loading fxml file
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("fxmlFile.fxml"));
 			root = loader.load();
-			c = loader.getController(); //saving controller class
+			c = loader.getController(); // saving controller class
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}
 		Scene s = new Scene(root);
 		stage.setScene(s);
-		stage.setTitle("Mother Yukker requester");
+		stage.setTitle("ICM - Prototype");
 		stage.show();
 		DataBaseController.Connect();
 		setTable();
 		refreshTable();
+
+		Button search = c.getSearchButton();
+		search.setOnAction(e -> {
+			try {
+				int id = Integer.parseInt(c.getSerachFeild().getText());
+				refreshTableWithID(id);
+			} catch (Exception e1) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("ERROR!");
+				alert.setContentText("You didn't enter a number");
+				alert.show();
+				return;
+			}
+		});
+
 		Button addButton = c.getAddButton();
-		addButton.setOnAction(e->{
+		addButton.setOnAction(e -> {
 			try {
 				DataBaseController.addToDB(c.gettAddText().getText().toString());
 				refreshTable();
 				c.gettAddText().setText("");
-			}
-			catch(Exception e1){
-				mp.play();
+			} catch (Exception e1) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Wrong parameters!");
-				alert.setContentText("Please enter 6 parameters: string,INT,string,string,string,string");
+				alert.setContentText("Please enter 6 parameters:\n" + "string,INT,string,string,string,string\n"
+						+ "The int is 0-5\n" + "The strings are up to 1000 characters");
 				alert.show();
 			}
 		});
-
-		Button changeButton = c.getChangeButton();
-		changeButton.setOnAction(e->{
-			Request r;
-		    r = table.getSelectionModel().getSelectedItem();
-			try {
-			r.setStatus(c.getChangeText().getText().toString());
-			} catch(Exception e2)
-			{
-				mp.play();
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("ERROR!");
-				alert.setContentText("No row selected!");
-				alert.show();
-				return;
-			}
-			DataBaseController.changeStatus(r.getId(), r.getStatus());
-			refreshTable();
-		});
-
 
 		Button saveDesc = c.getSaveDescButton();
-		saveDesc.setOnAction(e->{
+		saveDesc.setOnAction(e -> {
 			Request r;
-		    r = table.getSelectionModel().getSelectedItem();
+			r = table.getSelectionModel().getSelectedItem();
 			try {
-			r.setDesc(c.getDescArea().getText().toString());
-			} catch(Exception e2)
-			{
-				mp.play();
+				String text = c.getDescArea().getText();
+				if (text.length() > 1000)
+					throw new Exception("Too long text");
+				r.setDesc(text);
+			} catch (Exception e2) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("ERROR!");
-				alert.setContentText("couldn't save changes!");
+				alert.setContentText("Couldn't save changes!");
 				alert.show();
 				return;
 			}
@@ -103,17 +96,18 @@ public class Main extends Application {
 		});
 
 		Button saveChanges = c.getSaveChangesButton();
-		saveChanges.setOnAction(e->{
+		saveChanges.setOnAction(e -> {
 			Request r;
-		    r = table.getSelectionModel().getSelectedItem();
+			r = table.getSelectionModel().getSelectedItem();
 			try {
-			r.setChange(c.getChangesArea().getText().toString());
-			} catch(Exception e2)
-			{
-				mp.play();
+				String text = c.getChangesArea().getText();
+				if (text.length() > 1000)
+					throw new Exception("Too long text");
+				r.setChange(text);
+			} catch (Exception e2) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("ERROR!");
-				alert.setContentText("couldn't save changes!");
+				alert.setContentText("Couldn't save changes!");
 				alert.show();
 				return;
 			}
@@ -123,33 +117,52 @@ public class Main extends Application {
 			c.getSaveChangesButton().setVisible(false);
 		});
 
+		Button saveStatus = c.getSaveStatusButton();
+		saveStatus.setOnAction(e -> {
+			Request r;
+			r = table.getSelectionModel().getSelectedItem();
+			try {
+				String text = c.getStatusArea().getText();
+				if (text.length() > 100)
+					throw new Exception("Too long text");
+				r.setStatus(text);
+			} catch (Exception e2) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("ERROR!");
+				alert.setContentText("Couldn't save changes!");
+				alert.show();
+				return;
+			}
+			DataBaseController.changeStatus(r.getId(), r.getStatus());
+			refreshTable();
+			c.getStatusArea().setEditable(false);
+			c.getSaveStatusButton().setVisible(false);
+		});
+	}
 
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	public void setTable()
-    {
-		TableColumn<Request,Integer> idColumn = new TableColumn<>("id");
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setTable() {
+		TableColumn<Request, Integer> idColumn = new TableColumn<>("Request ID");
 		idColumn.setCellValueFactory(new PropertyValueFactory("id"));
-		TableColumn<Request,String> nameColumn = new TableColumn<>("name");
+		TableColumn<Request, String> nameColumn = new TableColumn<>("Requestor Name");
 		nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
-		nameColumn.setPrefWidth(90);
-		TableColumn<Request,String> systemColumn = new TableColumn<>("system");
+		TableColumn<Request, String> systemColumn = new TableColumn<>("System");
 		systemColumn.setCellValueFactory(new PropertyValueFactory("system"));
-		TableColumn<Request,String> statusColumn = new TableColumn<>("status");
+		TableColumn<Request, String> statusColumn = new TableColumn<>("Status");
 		statusColumn.setCellValueFactory(new PropertyValueFactory("status"));
 		table = (TableView<Request>) c.getTable();
-		table.getColumns().addAll(idColumn,nameColumn,systemColumn,statusColumn);
-    }
+		table.getColumns().addAll(idColumn, nameColumn, systemColumn, statusColumn);
+	}
 
-    public void refreshTable()
-    {
-    	ObservableList<Request> ol = DataBaseController.getTable();
-    	if (ol.size()!=0) {
-    		if ((ol.get(2).getSystemInt()<2||ol.get(2).getSystemInt()<0)) return;
-    	}
+	public void refreshTable() {
+		ObservableList<Request> ol = DataBaseController.getTable();
 		table.setItems(ol);
-    }
+	}
+
+	public void refreshTableWithID(int id) {
+		ObservableList<Request> ol = DataBaseController.getTableWithID(id);
+		table.setItems(ol);
+	}
 
 	public static void main(String[] args) {
 		launch(args);

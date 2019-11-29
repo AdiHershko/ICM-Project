@@ -9,38 +9,66 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="884.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1326.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
-      <TableView fx:id="table" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showRequest" prefHeight="436.0" prefWidth="227.0">
+      <TableView fx:id="table" layoutX="14.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showRequest" prefHeight="426.0" prefWidth="455.0">
          <padding>
             <Insets top="2.0" />
          </padding>
       </TableView>
-      <Button fx:id="addButton" layoutX="105.0" layoutY="476.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="Add" />
-      <TextField fx:id="addText" layoutX="14.0" layoutY="451.0" prefHeight="25.0" prefWidth="227.0" promptText="name,system,desc,change,status,handler" />
-      <Pane fx:id="requestPane" layoutX="252.0" layoutY="14.0" prefHeight="484.0" prefWidth="626.0">
+      <Button fx:id="addButton" layoutX="200.0" layoutY="613.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="70.0" text="Add" />
+      <TextField fx:id="addText" alignment="CENTER" layoutX="14.0" layoutY="570.0" prefHeight="31.0" prefWidth="455.0" promptText="UserName,System(int),Description,Change needed,Status,Handler" />
+      <Pane fx:id="requestPane" layoutX="477.0" layoutY="77.0" prefHeight="567.0" prefWidth="835.0">
          <children>
-            <Button fx:id="changeButton" layoutX="2.0" layoutY="420.0" mnemonicParsing="false" text="Change status" />
-            <TextField fx:id="changeText" layoutX="2.0" layoutY="445.0" prefHeight="25.0" prefWidth="115.0" promptText="Enter new status" />
-            <Label layoutX="7.0" layoutY="129.0" style="-fx-background-color: white;" text="Request description" />
-            <TextArea fx:id="descArea" editable="false" layoutX="117.0" layoutY="87.0" prefHeight="100.0" prefWidth="497.0" />
-            <Label layoutX="7.0" layoutY="307.0" prefHeight="17.0" prefWidth="105.0" style="-fx-background-color: white;" text="Request changes:" />
-            <TextArea fx:id="changesArea" editable="false" layoutX="117.0" layoutY="274.0" prefHeight="100.0" prefWidth="497.0" />
-            <Label layoutX="14.0" layoutY="22.0" text="Request handler:">
+            <Label layoutX="7.0" layoutY="171.0" prefHeight="21.0" prefWidth="145.0" text="Request description:" />
+            <TextArea fx:id="descArea" editable="false" layoutX="156.0" layoutY="132.0" prefHeight="126.0" prefWidth="669.0" />
+            <Label layoutX="7.0" layoutY="348.0" prefHeight="21.0" prefWidth="145.0" text="Needed changes:" />
+            <TextArea fx:id="changesArea" editable="false" layoutX="156.0" layoutY="319.0" prefHeight="100.0" prefWidth="669.0" />
+            <Label layoutX="14.0" layoutY="63.0" text="Request handler:">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="handlerLabel" layoutX="201.0" layoutY="22.0" wrapText="true">
+            <Label layoutX="7.0" layoutY="487.0" text="Request status:" />
+            <Label fx:id="handlerLabel" layoutX="201.0" layoutY="63.0" wrapText="true">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button fx:id="descEditButton" layoutX="117.0" layoutY="187.0" mnemonicParsing="false" onAction="#editDesc" text="Edit" />
-            <Button fx:id="changesEditButton" layoutX="117.0" layoutY="374.0" mnemonicParsing="false" onAction="#editChanges" text="Edit" />
-            <Button fx:id="saveDescButton" layoutX="295.0" layoutY="187.0" mnemonicParsing="false" text="Save changes" visible="false" />
-            <Button fx:id="saveChangesButton" layoutX="295.0" layoutY="374.0" mnemonicParsing="false" text="Save changes" visible="false" />
+            <Button fx:id="descEditButton" layoutX="445.0" layoutY="267.0" mnemonicParsing="false" onAction="#editDesc" text="Edit" />
+            <Button fx:id="changesEditButton" layoutX="445.0" layoutY="431.0" mnemonicParsing="false" onAction="#editChanges" text="Edit" />
+            <Button fx:id="saveDescButton" layoutX="510.0" layoutY="267.0" mnemonicParsing="false" text="Save changes" visible="false" />
+            <Button fx:id="saveChangesButton" layoutX="510.0" layoutY="431.0" mnemonicParsing="false" text="Save changes" visible="false" />
+            <TextArea fx:id="statusArea" editable="false" layoutX="156.0" layoutY="473.0" prefHeight="10.0" prefWidth="200.0" />
+            <Button fx:id="statusEditButton" layoutX="372.0" layoutY="482.0" mnemonicParsing="false" onAction="#editStatus" text="Edit" />
+            <Button fx:id="saveStatusButton" layoutX="428.0" layoutY="482.0" mnemonicParsing="false" text="Save changes" visible="false" />
+            <Label layoutX="15.0" layoutY="14.0" text="Request ID:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="idLabel" layoutX="151.0" layoutY="14.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
+      <Label layoutX="626.0" layoutY="14.0" text="ICM" textFill="RED">
+         <font>
+            <Font size="42.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="88.0" text="Serach by ID:">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <TextField fx:id="serachFeild" layoutX="163.0" layoutY="85.0" prefHeight="31.0" prefWidth="145.0" promptText="Request ID">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Button fx:id="SearchButton" layoutX="321.0" layoutY="89.0" mnemonicParsing="false" text="Serach" />
    </children>
 </Pane>

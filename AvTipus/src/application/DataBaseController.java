@@ -17,27 +17,22 @@ public class DataBaseController {
 	private static String username = "java";
 	private static String password = "Aa123456";
 
-	public static void Connect()
-	{
+	public static void Connect() {
 
 		System.out.println("Connecting to database...");
 
 		try {
 			c = DriverManager.getConnection(url, username, password);
-		    System.out.println("Database connected!");
-		}
-		catch(SQLException e)
-		{
+			System.out.println("Database connected!");
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-
-	public static ObservableList<Request> getTable()
-	{
+	public static ObservableList<Request> getTable() {
 		ObservableList<Request> o = FXCollections.observableArrayList();
-		String query="select * from requests";
-		ResultSet rs=null;
+		String query = "select * from requests";
+		ResultSet rs = null;
 		PreparedStatement statement;
 		try {
 			statement = c.prepareStatement(query);
@@ -46,35 +41,60 @@ public class DataBaseController {
 			e.printStackTrace();
 		}
 		try {
-			while (rs.next())
-			{
+			while (rs.next()) {
 				try {
-					o.add(new Request(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7)));
+					o.add(new Request(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
+							rs.getString(6), rs.getString(7)));
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return o;
 	}
 
-	public static void addToDB(String txt) throws Exception
-	{
+	public static ObservableList<Request> getTableWithID(int id) {
+		ObservableList<Request> o = FXCollections.observableArrayList();
+		String query = "select * from requests where id=" + Integer.toString(id);
+		ResultSet rs = null;
+		PreparedStatement statement;
+		try {
+			statement = c.prepareStatement(query);
+			rs = statement.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			while (rs.next()) {
+				try {
+					o.add(new Request(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
+							rs.getString(6), rs.getString(7)));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return o;
+	}
+
+	public static void addToDB(String txt) throws Exception {
 		ArrayList<String> arr;
 		PreparedStatement st;
 		String query = "insert into requests (requests.name,requests.system,requests.desc,requests.change,requests.status,requests.handler)"
 				+ " values (?,?,?,?,?,?);";
-			arr=new ArrayList<>(Arrays.asList(txt.split(",")));
-			if (arr.size()!=6||Integer.parseInt(arr.get(1))>2||Integer.parseInt(arr.get(1))<0){
-				System.out.println("Wrong parameters");
-				throw new Exception("Wrong parameters");
-			}
-			try {
-			st=c.prepareStatement(query);
+		arr = new ArrayList<>(Arrays.asList(txt.split(",")));
+		if (arr.size() != 6 || Integer.parseInt(arr.get(1)) > 5 || Integer.parseInt(arr.get(1)) < 0
+				|| arr.get(0).length() > 100 || arr.get(2).length() > 1000 || arr.get(3).length() > 1000
+				|| arr.get(4).length() > 100 || arr.get(5).length() > 100) {
+			System.out.println("Wrong parameters");
+			throw new Exception("Wrong parameters");
+		}
+		try {
+			st = c.prepareStatement(query);
 			st.setString(1, arr.get(0));
 			st.setInt(2, Integer.parseInt(arr.get(1)));
 			st.setString(3, arr.get(2));
@@ -82,14 +102,13 @@ public class DataBaseController {
 			st.setString(5, arr.get(4));
 			st.setString(6, arr.get(5));
 			st.execute();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static boolean changeStatus(int id,String status)
-	{
-		String query = "update requests set status='"+status+"' where id="+id;
+	public static boolean changeStatus(int id, String status) {
+		String query = "update requests set status='" + status + "' where id=" + id;
 		try {
 			PreparedStatement st = c.prepareStatement(query);
 			st.execute();
@@ -99,9 +118,8 @@ public class DataBaseController {
 		return true;
 	}
 
-	public static boolean changeDescription(int id,String desc)
-	{
-		String query = "update requests set requests.desc='"+desc+"' where id="+id;
+	public static boolean changeDescription(int id, String desc) {
+		String query = "update requests set requests.desc='" + desc + "' where id=" + id;
 		try {
 			PreparedStatement st = c.prepareStatement(query);
 			st.execute();
@@ -111,9 +129,8 @@ public class DataBaseController {
 		return true;
 	}
 
-	public static boolean changeChanges(int id,String change)
-	{
-		String query = "update requests set requests.change='"+change+"' where id="+id;
+	public static boolean changeChanges(int id, String change) {
+		String query = "update requests set requests.change='" + change + "' where id=" + id;
 		try {
 			PreparedStatement st = c.prepareStatement(query);
 			st.execute();
@@ -122,7 +139,5 @@ public class DataBaseController {
 		}
 		return true;
 	}
-
-
 
 }
