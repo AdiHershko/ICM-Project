@@ -44,6 +44,9 @@ public class Main extends Application {
 		setTable();
 		refreshTable();
 
+		c.getDescArea().setWrapText(true);
+		c.getChangesArea().setWrapText(true);
+		
 		Button search = c.getSearchButton();
 		search.setOnAction(e -> {
 			try {
@@ -85,8 +88,9 @@ public class Main extends Application {
 			} catch (Exception e2) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("ERROR!");
-				alert.setContentText("Couldn't save changes!");
+				alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 				alert.show();
+				e2.printStackTrace();
 				return;
 			}
 			DataBaseController.changeDescription(r.getId(), r.getDesc());
@@ -107,8 +111,9 @@ public class Main extends Application {
 			} catch (Exception e2) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("ERROR!");
-				alert.setContentText("Couldn't save changes!");
+				alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 				alert.show();
+				e2.printStackTrace();
 				return;
 			}
 			DataBaseController.changeChanges(r.getId(), r.getChange());
@@ -129,8 +134,9 @@ public class Main extends Application {
 			} catch (Exception e2) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("ERROR!");
-				alert.setContentText("Couldn't save changes!");
+				alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 				alert.show();
+				e2.printStackTrace();
 				return;
 			}
 			DataBaseController.changeStatus(r.getId(), r.getStatus());
