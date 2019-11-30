@@ -44,26 +44,16 @@ public class UserConsole extends Application {
 		stage.setScene(s);
 		stage.setTitle("ICM - Prototype");
 		stage.show();
-		//DataBaseController.Connect();
 		c.setTable();
-		//c.refreshTable();
 		Controller._ins.client.handleMessageFromClientUI("REFRESH");
 		c.getDescArea().setWrapText(true);
 		c.getChangesArea().setWrapText(true);
 		c.getChangesEditButton().setVisible(false);
 		c.getDescEditButton().setVisible(false);
 		c.getStatusEditButton().setVisible(false);
-
-
 	}
 
-
-
-
-
-
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		launch(args);
 	}
 
