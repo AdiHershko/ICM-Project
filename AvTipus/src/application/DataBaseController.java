@@ -90,7 +90,6 @@ public class DataBaseController {
 		if (arr.size() != 6 || Integer.parseInt(arr.get(1)) > 5 || Integer.parseInt(arr.get(1)) < 0
 				|| arr.get(0).length() > 100 || arr.get(2).length() > 1000 || arr.get(3).length() > 1000
 				|| arr.get(4).length() > 100 || arr.get(5).length() > 100) {
-			System.out.println("Wrong parameters");
 			throw new Exception("Wrong parameters");
 		}
 		try {

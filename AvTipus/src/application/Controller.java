@@ -1,6 +1,8 @@
 package application;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import client.ChatClient;
 import javafx.collections.ObservableList;
@@ -104,7 +106,7 @@ public class Controller {
 	public void initialize() throws IOException{
 		Controller._ins = this;
 		 client = new ChatClient("localhost",EchoServer.DEFAULT_PORT);
-		 DataBaseController.Connect();
+		 DataBaseController.Connect();//TODO
 	}
 
 	public TextArea getStatusArea() {
@@ -224,8 +226,14 @@ public class Controller {
 	public void addToTable()
 	{
 		try {
-			//DataBaseController.addToDB(gettAddText().getText().toString());
-			client.handleMessageFromClientUI("ADDLINE "+gettAddText().getText().toString());
+			String txt = gettAddText().getText().toString();
+			ArrayList<String> arr = new ArrayList<>(Arrays.asList(txt.split(",")));;
+			if (arr.size() != 6 || Integer.parseInt(arr.get(1)) > 5 || Integer.parseInt(arr.get(1)) < 0
+					|| arr.get(0).length() > 100 || arr.get(2).length() > 1000 || arr.get(3).length() > 1000
+					|| arr.get(4).length() > 100 || arr.get(5).length() > 100) {
+				throw new Exception("Wrong parameters");
+			}
+			client.handleMessageFromClientUI("ADDLINE "+txt);
 			refreshTable();
 			gettAddText().setText("");
 		} catch (Exception e1) {
@@ -248,6 +256,8 @@ public class Controller {
 			if (text.length() > 1000)
 				throw new Exception("Too long text");
 			r.setChange(text);
+			//DataBaseController.changeChanges(r.getId(), r.getChange());//TODO
+			client.handleMessageFromClientUI("CHANGECHANGE " + Integer.toString(r.getId()) + " " + text);
 		} catch (Exception e2) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
@@ -256,10 +266,10 @@ public class Controller {
 			e2.printStackTrace();
 			return;
 		}
-		DataBaseController.changeChanges(r.getId(), r.getChange());
-		refreshTable();
+		refreshTable();//TODO
 		table.getSelectionModel().select(i);
-
+		getDescArea().setEditable(false);
+		getSaveDescButton().setVisible(false);
 	}
 
 	@FXML
@@ -273,6 +283,7 @@ public class Controller {
 			if (text.length() > 1000)
 				throw new Exception("Too long text");
 			r.setDesc(text);
+			DataBaseController.changeDescription(r.getId(), r.getDesc());//TODO
 		} catch (Exception e2) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
@@ -281,9 +292,8 @@ public class Controller {
 			e2.printStackTrace();
 			return;
 		}
-		DataBaseController.changeDescription(r.getId(), r.getDesc());
 		refreshTable();
-		table.getSelectionModel().select(i);
+		table.getSelectionModel().select(i);//TODO
 		getDescArea().setEditable(false);
 		getSaveDescButton().setVisible(false);
 	}
@@ -299,6 +309,7 @@ public class Controller {
 			if (text.length() > 100)
 				throw new Exception("Too long text");
 			r.setStatus(text);
+			DataBaseController.changeStatus(r.getId(), r.getStatus());//TODO
 		} catch (Exception e2) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
@@ -307,22 +318,18 @@ public class Controller {
 			e2.printStackTrace();
 			return;
 		}
-		DataBaseController.changeStatus(r.getId(), r.getStatus());
 		refreshTable();
-		table.getSelectionModel().select(i);
+		table.getSelectionModel().select(i);//TODO
 		getStatusArea().setEditable(false);
 		getSaveStatusButton().setVisible(false);
 	}
 
 	public void refreshTable() {
 		if (UserConsole._init.isSerach == false) {
-			//ObservableList<Request> ol = DataBaseController.getTable();
-			//table.setItems(ol);
 			client.handleMessageFromClientUI("REFRESH");
 		}
 		if (UserConsole._init.isSerach) {
-			ObservableList<Request> ol = DataBaseController.getTableWithID(UserConsole._init.searchid);
-			table.setItems(ol);
+			client.handleMessageFromClientUI("REFRESHID " + Integer.toString(UserConsole._init.searchid));//TODO: Add ID
 		}
 	}
 
@@ -333,15 +340,13 @@ public class Controller {
 			String text = getSerachFeild().getText();
 			if (text.equals("*")) {
 				UserConsole._init.isSerach = false;
-				//refreshTable();
-				client.handleMessageFromClientUI("REFRESH");
+				
 			} else {
 				int id = Integer.parseUnsignedInt(text);
 				UserConsole._init.isSerach = true;
 				UserConsole._init.searchid = id;
-				//refreshTable();
-				client.handleMessageFromClientUI("REFRESH");
 			}
+			refreshTable();
 			getDescArea().setText("");
 			getChangesArea().setText("");
 			getHandlerLabel().setText("");
@@ -382,17 +387,4 @@ public class Controller {
 		table.getColumns().addAll(idColumn, nameColumn, systemColumn, statusColumn);
 		client.handleMessageFromClientUI("CONNECTED");
 	}
-
-
-
-	@FXML
-	Button testButton;
-
-	@FXML
-	public void testButtonAction()
-	{
-		client.handleMessageFromClientUI("TEST2 Testing one two");
-	}
-
-
 }
