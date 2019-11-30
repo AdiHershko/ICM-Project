@@ -5,7 +5,11 @@ package server;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import application.Controller;
+import application.DataBaseController;
 import ocsf.server.*;
 
 /**
@@ -55,17 +59,60 @@ public class EchoServer extends AbstractServer
 	  if(msg == null) return;
 	  //  System.out.println("Message received: " + msg + " from " + client);
 	    //this.sendToAllClients(msg);
-
-	  //db con
-
-	    try {
+	  ArrayList<String> arr = new ArrayList<String>(Arrays.asList(((String)msg).split(" ")));
+	  switch(arr.get(0))
+	  {
+	  case "CONNECTED":
+	  {
+//		  Controller._ins.refreshTable();
+		  try {
+			client.sendToClient("Connected to the server: " +client);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		  break;
+	  }
+	  case "TEST1": try {
 
 			//response to client
-			 client.sendToClient(msg);
+			 client.sendToClient("test1: " +msg);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	  break;
+	  case "TEST2":
+		  try {
+
+				//response to client
+				 client.sendToClient("test2:" +arr.subList(1, arr.size()).toString());
+				 try {
+					 DataBaseController.addToDB("test2,0,test2,test2,test2,test");
+				 } catch (Exception e) { System.out.println("Cant add to DB"); }
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  break;
+	  case "ADDLINE":
+	  {
+		  String str=arr.subList(1, arr.size()).toString();
+		  try {
+			  DataBaseController.addToDB(str);
+		  } catch(Exception e) { System.out.println("Could not add to db"); }
+		  try {
+			client.sendToClient("ADD: added to db!");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	  }
+	  }
+
+	  //db con
+
+
 
 	  }
 
@@ -102,6 +149,7 @@ public class EchoServer extends AbstractServer
   public static void main(String[] args)
   {
     int port = 0; //Port to listen on
+    DataBaseController.Connect();
 
     try
     {

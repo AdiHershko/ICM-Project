@@ -2,11 +2,12 @@ package application;
 
 import java.io.IOException;
 
+import client.ChatClient;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-
+import server.EchoServer;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -26,11 +27,6 @@ public class UserConsole extends Application {
 	int searchid = 0;
 
 
-	public void initialize()
-	{
-
-	}
-
 	@Override
 	public void start(Stage stage) throws Exception {
 		_init=this;
@@ -48,13 +44,11 @@ public class UserConsole extends Application {
 		stage.setScene(s);
 		stage.setTitle("ICM - Prototype");
 		stage.show();
-		DataBaseController.Connect();
+		//DataBaseController.Connect();
 		c.setTable();
 		c.refreshTable();
-
 		c.getDescArea().setWrapText(true);
 		c.getChangesArea().setWrapText(true);
-
 		c.getChangesEditButton().setVisible(false);
 		c.getDescEditButton().setVisible(false);
 		c.getStatusEditButton().setVisible(false);

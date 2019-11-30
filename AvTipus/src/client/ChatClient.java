@@ -45,6 +45,7 @@ public class ChatClient extends AbstractClient
   {
     super(host, port); //Call the superclass constructor
     openConnection();
+    System.out.println("Client connected");
   }
 
 
@@ -59,12 +60,13 @@ public class ChatClient extends AbstractClient
   {
     //clientUI.display(msg.toString());
 	  if(msg == null) return;
+	  System.out.println("from server: "+msg);
 	//bla bla check action
 	  //logi
 	  Platform.runLater(new Runnable() {
 		@Override
 		public void run() {
-			// Controller._ins.addRows();
+			Controller._ins.refreshTable();
 		}
 	});
 
@@ -83,7 +85,8 @@ public class ChatClient extends AbstractClient
     }
     catch(IOException e)
     {
-    	//
+    	System.out.println("sending message to server failed");
+    	quit();
     }
   }
 

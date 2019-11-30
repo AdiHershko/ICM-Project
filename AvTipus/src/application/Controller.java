@@ -1,5 +1,8 @@
 package application;
 
+import java.io.IOException;
+
+import client.ChatClient;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import server.EchoServer;
 
 public class Controller {
 
@@ -95,8 +99,12 @@ public class Controller {
 	@FXML
 	private Button SearchButton;
 
-	public void initialize(){
+	ChatClient client;
+
+	public void initialize() throws IOException{
 		Controller._ins = this;
+		 client = new ChatClient("localhost",EchoServer.DEFAULT_PORT);
+		 DataBaseController.Connect();
 	}
 
 	public TextArea getStatusArea() {
@@ -216,7 +224,8 @@ public class Controller {
 	public void addToTable()
 	{
 		try {
-			DataBaseController.addToDB(gettAddText().getText().toString());
+			//DataBaseController.addToDB(gettAddText().getText().toString());
+			client.handleMessageFromClientUI("ADDLINE "+gettAddText().getText().toString());
 			refreshTable();
 			gettAddText().setText("");
 		} catch (Exception e1) {
@@ -250,6 +259,7 @@ public class Controller {
 		DataBaseController.changeChanges(r.getId(), r.getChange());
 		refreshTable();
 		table.getSelectionModel().select(i);
+
 	}
 
 	@FXML
@@ -322,7 +332,7 @@ public class Controller {
 			String text = getSerachFeild().getText();
 			if (text.equals("*")) {
 				UserConsole._init.isSerach = false;
-				//refreshTable();
+				refreshTable();
 			} else {
 				int id = Integer.parseUnsignedInt(text);
 				UserConsole._init.isSerach = true;
@@ -367,6 +377,18 @@ public class Controller {
 		statusColumn.setCellValueFactory(new PropertyValueFactory("status"));
 		table = (TableView<Request>) getTable();
 		table.getColumns().addAll(idColumn, nameColumn, systemColumn, statusColumn);
+		 client.handleMessageFromClientUI("CONNECTED");
+	}
+
+
+
+	@FXML
+	Button testButton;
+
+	@FXML
+	public void testButtonAction()
+	{
+		client.handleMessageFromClientUI("TEST2 Testing one two");
 	}
 
 
