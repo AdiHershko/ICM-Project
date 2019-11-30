@@ -25,7 +25,7 @@ public class Controller {
 	private Pane pane;
 
 	@FXML
-	private TableView<Request> table;
+	public TableView<Request> table;
 
 	public Label getIdLabel() {
 		return idLabel;
@@ -316,8 +316,9 @@ public class Controller {
 
 	public void refreshTable() {
 		if (UserConsole._init.isSerach == false) {
-			ObservableList<Request> ol = DataBaseController.getTable();
-			table.setItems(ol);
+			//ObservableList<Request> ol = DataBaseController.getTable();
+			//table.setItems(ol);
+			client.handleMessageFromClientUI("REFRESH");
 		}
 		if (UserConsole._init.isSerach) {
 			ObservableList<Request> ol = DataBaseController.getTableWithID(UserConsole._init.searchid);
@@ -332,12 +333,14 @@ public class Controller {
 			String text = getSerachFeild().getText();
 			if (text.equals("*")) {
 				UserConsole._init.isSerach = false;
-				refreshTable();
+				//refreshTable();
+				client.handleMessageFromClientUI("REFRESH");
 			} else {
 				int id = Integer.parseUnsignedInt(text);
 				UserConsole._init.isSerach = true;
 				UserConsole._init.searchid = id;
-				refreshTable();
+				//refreshTable();
+				client.handleMessageFromClientUI("REFRESH");
 			}
 			getDescArea().setText("");
 			getChangesArea().setText("");
@@ -377,7 +380,7 @@ public class Controller {
 		statusColumn.setCellValueFactory(new PropertyValueFactory("status"));
 		table = (TableView<Request>) getTable();
 		table.getColumns().addAll(idColumn, nameColumn, systemColumn, statusColumn);
-		 client.handleMessageFromClientUI("CONNECTED");
+		client.handleMessageFromClientUI("CONNECTED");
 	}
 
 

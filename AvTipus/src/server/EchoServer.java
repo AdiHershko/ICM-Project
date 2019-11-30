@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 import application.Controller;
 import application.DataBaseController;
+import application.Request;
+import javafx.collections.ObservableList;
 import ocsf.server.*;
 
 /**
@@ -107,7 +109,20 @@ public class EchoServer extends AbstractServer
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		  break;
 	  }
+	  case "REFRESH":
+	  {
+		ObservableList<Request> ol = DataBaseController.getTable();
+		try {
+			client.sendToClient(ol.toArray());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	  }
+	  break;
 	  }
 
 	  //db con

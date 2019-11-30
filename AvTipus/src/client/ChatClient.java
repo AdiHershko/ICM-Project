@@ -7,9 +7,15 @@ package client;
 import ocsf.client.*;
 import ocsf.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import application.Controller;
+import application.Request;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * This class overrides some of the methods defined in the abstract
@@ -58,17 +64,31 @@ public class ChatClient extends AbstractClient
    */
   public void handleMessageFromServer(Object msg)
   {
-    //clientUI.display(msg.toString());
 	  if(msg == null) return;
 	  System.out.println("from server: "+msg);
+	  if (msg instanceof Object[])
+	  {
+		  Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					ObservableList<Request> l = FXCollections.observableArrayList();
+					for (Object o : (Object[]) msg)
+					{
+						l.add((Request)o);
+					}
+					Controller._ins.table.setItems(l);
+				}
+			});
+	  }
 	//bla bla check action
 	  //logi
+	  /*
 	  Platform.runLater(new Runnable() {
 		@Override
 		public void run() {
 			Controller._ins.refreshTable();
 		}
-	});
+	});*/
 
   }
 

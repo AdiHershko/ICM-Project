@@ -46,7 +46,8 @@ public class UserConsole extends Application {
 		stage.show();
 		//DataBaseController.Connect();
 		c.setTable();
-		c.refreshTable();
+		//c.refreshTable();
+		Controller._ins.client.handleMessageFromClientUI("REFRESH");
 		c.getDescArea().setWrapText(true);
 		c.getChangesArea().setWrapText(true);
 		c.getChangesEditButton().setVisible(false);
