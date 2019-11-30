@@ -24,9 +24,11 @@ public class ChatClient extends AbstractClient {
 	public void handleMessageFromServer(Object msg) {
 		if (msg == null)
 			return;
-		if (msg instanceof String) System.out.println("from server: " + msg);
+		if (msg instanceof String) {
+			System.out.println("from server: " + msg);
+		}
 		if (msg instanceof Object[]) {
-			Platform.runLater(new Runnable() {
+			/*Platform.runLater(new Runnable() { TODO
 				@Override
 				public void run() {
 					ObservableList<Request> l = FXCollections.observableArrayList();
@@ -35,8 +37,14 @@ public class ChatClient extends AbstractClient {
 					}
 					Controller._ins.table.setItems(l);
 				}
-			});
-		}
+			});	*/
+			ObservableList<Request> l = FXCollections.observableArrayList();
+			for (Object o : (Object[]) msg) {
+				l.add((Request) o);
+			}
+			Controller._ins.table.setItems(l);
+			Controller.ref_mutex = false;
+		}		
 	}
 
 	public void handleMessageFromClientUI(Object message) {

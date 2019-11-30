@@ -37,7 +37,7 @@ public class UserConsole extends Application {
 		stage.setTitle("ICM - Prototype");
 		stage.show();
 		c.setTable();
-		Controller._ins.client.handleMessageFromClientUI("REFRESH");
+		c.refreshTable();
 		c.getDescArea().setWrapText(true);
 		c.getChangesArea().setWrapText(true);
 		c.getChangesEditButton().setVisible(false);

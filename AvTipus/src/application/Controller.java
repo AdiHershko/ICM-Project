@@ -21,6 +21,8 @@ import server.EchoServer;
 
 public class Controller {
 
+	public static boolean ref_mutex = false;
+
 	public static Controller _ins;
 	@FXML
 	private Pane pane;
@@ -102,10 +104,9 @@ public class Controller {
 
 	ChatClient client;
 
-	public void initialize() throws IOException{
+	public void initialize() throws IOException {
 		Controller._ins = this;
-		 client = new ChatClient("localhost",EchoServer.DEFAULT_PORT);
-		 DataBaseController.Connect();//TODO
+		client = new ChatClient("localhost", EchoServer.DEFAULT_PORT);
 	}
 
 	public TextArea getStatusArea() {
@@ -187,7 +188,6 @@ public class Controller {
 			getStatusArea().setText(r.getStatus());
 			getIdLabel().setText(Integer.toString(r.getId()));
 
-
 			getChangesEditButton().setVisible(true);
 			getDescEditButton().setVisible(true);
 			getStatusEditButton().setVisible(true);
@@ -222,17 +222,17 @@ public class Controller {
 	}
 
 	@FXML
-	public void addToTable()
-	{
+	public void addToTable() {
 		try {
 			String txt = gettAddText().getText().toString();
-			ArrayList<String> arr = new ArrayList<>(Arrays.asList(txt.split(",")));;
+			ArrayList<String> arr = new ArrayList<>(Arrays.asList(txt.split(",")));
+			;
 			if (arr.size() != 6 || Integer.parseInt(arr.get(1)) > 5 || Integer.parseInt(arr.get(1)) < 0
 					|| arr.get(0).length() > 100 || arr.get(2).length() > 1000 || arr.get(3).length() > 1000
 					|| arr.get(4).length() > 100 || arr.get(5).length() > 100) {
 				throw new Exception("Wrong parameters");
 			}
-			client.handleMessageFromClientUI("ADDLINE "+txt);
+			client.handleMessageFromClientUI("ADDLINE " + txt);
 			refreshTable();
 			gettAddText().setText("");
 		} catch (Exception e1) {
@@ -245,8 +245,7 @@ public class Controller {
 	}
 
 	@FXML
-	public void saveChangesChanges()
-	{
+	public void saveChangesChanges() {
 		Request r;
 		r = table.getSelectionModel().getSelectedItem();
 		int i = table.getSelectionModel().getSelectedIndex();
@@ -255,7 +254,6 @@ public class Controller {
 			if (text.length() > 1000)
 				throw new Exception("Too long text");
 			r.setChange(text);
-			//DataBaseController.changeChanges(r.getId(), r.getChange());//TODO
 			client.handleMessageFromClientUI("CHANGECHANGE " + r.getId() + " " + text);
 		} catch (Exception e2) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -266,14 +264,13 @@ public class Controller {
 			return;
 		}
 		refreshTable();
-		getDescArea().setEditable(false);
-		getSaveDescButton().setVisible(false);
-		selectRow(i);
+		table.getSelectionModel().select(i);
+		getChangesArea().setEditable(false);
+		getSaveChangesButton().setVisible(false);
 	}
 
 	@FXML
-	public void saveDescChanges()
-	{
+	public void saveDescChanges() {
 		Request r;
 		r = table.getSelectionModel().getSelectedItem();
 		int i = table.getSelectionModel().getSelectedIndex();
@@ -282,7 +279,6 @@ public class Controller {
 			if (text.length() > 1000)
 				throw new Exception("Too long text");
 			r.setDesc(text);
-		//	DataBaseController.changeDescription(r.getId(), r.getDesc());//TODO
 			client.handleMessageFromClientUI("CHANGEDESC " + r.getId() + " " + text);
 		} catch (Exception e2) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -293,14 +289,13 @@ public class Controller {
 			return;
 		}
 		refreshTable();
+		table.getSelectionModel().select(i);
 		getDescArea().setEditable(false);
 		getSaveDescButton().setVisible(false);
-		selectRow(i);
 	}
 
 	@FXML
-	public void saveChangeStatus()
-	{
+	public void saveChangeStatus() {
 		Request r;
 		r = table.getSelectionModel().getSelectedItem();
 		int i = table.getSelectionModel().getSelectedIndex();
@@ -309,7 +304,6 @@ public class Controller {
 			if (text.length() > 100)
 				throw new Exception("Too long text");
 			r.setStatus(text);
-		//	DataBaseController.changeStatus(r.getId(), r.getStatus());//TODO
 			client.handleMessageFromClientUI("CHANGESTATUS " + r.getId() + " " + text);
 
 		} catch (Exception e2) {
@@ -321,23 +315,30 @@ public class Controller {
 			return;
 		}
 		refreshTable();
+		table.getSelectionModel().select(i);
 		getStatusArea().setEditable(false);
 		getSaveStatusButton().setVisible(false);
-		selectRow(i);
 	}
 
 	public void refreshTable() {
+		ref_mutex = true;
 		if (UserConsole._init.isSerach == false) {
 			client.handleMessageFromClientUI("REFRESH");
 		}
 		if (UserConsole._init.isSerach) {
-			client.handleMessageFromClientUI("REFRESHID " + UserConsole._init.searchid);//TODO: Add ID
+			client.handleMessageFromClientUI("REFRESHID " + UserConsole._init.searchid);
+		}
+		while (ref_mutex) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@FXML
-	public void searchTable()
-	{
+	public void searchTable() {
 		try {
 			String text = getSerachFeild().getText();
 			if (text.equals("*")) {
@@ -374,7 +375,6 @@ public class Controller {
 		}
 	}
 
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setTable() {
 		TableColumn<Request, Integer> idColumn = new TableColumn<>("Request ID");
@@ -388,22 +388,5 @@ public class Controller {
 		table = (TableView<Request>) getTable();
 		table.getColumns().addAll(idColumn, nameColumn, systemColumn, statusColumn);
 		client.handleMessageFromClientUI("CONNECTED");
-	}
-
-	public void selectRow(int i)
-	{
-		new Thread(){
-			public void run() {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				table.getSelectionModel().select(i);
-			}
-
-		}.start();
-
 	}
 }
