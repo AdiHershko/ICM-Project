@@ -13,9 +13,9 @@ import javafx.collections.ObservableList;
 
 public class DataBaseController {
 	private static Connection c;
-	private static String url = "jdbc:mysql://localhost:3306/avtipus?useLegacyDatetimeCode=false&serverTimezone=UTC";
-	private static String username = "java";
-	private static String password = "Aa123456";
+	private static String url = "jdbc:mysql://remotemysql.com:3306/jsyC4yp1qF?useLegacyDatetimeCode=false&serverTimezone=UTC";
+	private static String username = "jsyC4yp1qF";
+	private static String password = "50MjwBICSL";
 
 	public static void Connect() {
 
@@ -87,6 +87,14 @@ public class DataBaseController {
 		String query = "insert into requests (requests.name,requests.system,requests.desc,requests.change,requests.status,requests.handler)"
 				+ " values (?,?,?,?,?,?);";
 		arr = new ArrayList<>(Arrays.asList(txt.split(",")));
+		for (int i = 0;i<arr.size();i++) //CUT SPACES INFRONT OF WORD (REMOVES PARSE INT EXCEPTION FOR 2 WORDS IN ADDLINE
+		{
+			if (arr.get(i).charAt(0)==' ')
+			{
+				String temp = arr.get(i).substring(1);
+				arr.set(i, temp);
+			}
+		}
 		if (arr.size() != 6 || Integer.parseInt(arr.get(1)) > 5 || Integer.parseInt(arr.get(1)) < 0
 				|| arr.get(0).length() > 100 || arr.get(2).length() > 1000 || arr.get(3).length() > 1000
 				|| arr.get(4).length() > 100 || arr.get(5).length() > 100) {

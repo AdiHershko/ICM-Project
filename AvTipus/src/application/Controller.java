@@ -226,13 +226,12 @@ public class Controller {
 		try {
 			String txt = gettAddText().getText().toString();
 			ArrayList<String> arr = new ArrayList<>(Arrays.asList(txt.split(",")));
-			;
 			if (arr.size() != 6 || Integer.parseInt(arr.get(1)) > 5 || Integer.parseInt(arr.get(1)) < 0
 					|| arr.get(0).length() > 100 || arr.get(2).length() > 1000 || arr.get(3).length() > 1000
 					|| arr.get(4).length() > 100 || arr.get(5).length() > 100) {
 				throw new Exception("Wrong parameters");
 			}
-			client.handleMessageFromClientUI("ADDLINE " + txt);
+			client.handleMessageFromClientUI("ADDLINE," + txt);
 			refreshTable();
 			gettAddText().setText("");
 		} catch (Exception e1) {
@@ -254,7 +253,7 @@ public class Controller {
 			if (text.length() > 1000)
 				throw new Exception("Too long text");
 			r.setChange(text);
-			client.handleMessageFromClientUI("CHANGECHANGE " + r.getId() + " " + text);
+			client.handleMessageFromClientUI("CHANGECHANGE," + r.getId() + "," + text);
 		} catch (Exception e2) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
@@ -279,7 +278,7 @@ public class Controller {
 			if (text.length() > 1000)
 				throw new Exception("Too long text");
 			r.setDesc(text);
-			client.handleMessageFromClientUI("CHANGEDESC " + r.getId() + " " + text);
+			client.handleMessageFromClientUI("CHANGEDESC," + r.getId() + "," + text);
 		} catch (Exception e2) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
@@ -304,7 +303,7 @@ public class Controller {
 			if (text.length() > 100)
 				throw new Exception("Too long text");
 			r.setStatus(text);
-			client.handleMessageFromClientUI("CHANGESTATUS " + r.getId() + " " + text);
+			client.handleMessageFromClientUI("CHANGESTATUS," + r.getId() + "," + text);
 
 		} catch (Exception e2) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -326,7 +325,7 @@ public class Controller {
 			client.handleMessageFromClientUI("REFRESH");
 		}
 		if (UserConsole._init.isSerach) {
-			client.handleMessageFromClientUI("REFRESHID " + UserConsole._init.searchid);
+			client.handleMessageFromClientUI("REFRESHID," + UserConsole._init.searchid);
 		}
 		while (ref_mutex) {
 			try {

@@ -20,7 +20,7 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		if (msg == null)
 			return;
-		ArrayList<String> arr = new ArrayList<String>(Arrays.asList(((String) msg).split(" ")));
+		ArrayList<String> arr = new ArrayList<String>(Arrays.asList(((String) msg).split(",")));
 		switch (arr.get(0)) {
 		case "CONNECTED": {
 			try {
@@ -65,9 +65,10 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "CHANGECHANGE": {
-			String str = arr.subList(2, arr.size()).toString();
+			String str = arr.subList(1, arr.size()).toString();
 			str = str.substring(1, str.length() - 1);
 			int id = Integer.parseInt(arr.get(1));
+			str=str.substring(3);
 			try {
 				DataBaseController.changeChanges(id, str);
 			} catch (Exception e) {
@@ -81,9 +82,10 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "CHANGEDESC": {
-			String str = arr.subList(2, arr.size()).toString();
+			String str = arr.subList(1, arr.size()).toString();
 			str = str.substring(1, str.length() - 1);
 			int id = Integer.parseInt(arr.get(1));
+			str=str.substring(3);
 			try {
 				DataBaseController.changeDescription(id, str);
 			} catch (Exception e) {
@@ -97,9 +99,10 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "CHANGESTATUS": {
-			String str = arr.subList(2, arr.size()).toString();
+			String str = arr.subList(1, arr.size()).toString();
 			str = str.substring(1, str.length() - 1);
 			int id = Integer.parseInt(arr.get(1));
+			str=str.substring(3);
 			try {
 				DataBaseController.changeStatus(id, str);
 			} catch (Exception e) {
