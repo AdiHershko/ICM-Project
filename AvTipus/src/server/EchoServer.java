@@ -1,15 +1,14 @@
 package server;
 
-import java.io.*;
-import java.sql.SQLException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import application.Controller;
 import application.DataBaseController;
 import application.Request;
 import javafx.collections.ObservableList;
-import ocsf.server.*;
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
 
 public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;

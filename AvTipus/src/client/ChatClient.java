@@ -4,18 +4,14 @@
 
 package client;
 
-import ocsf.client.*;
-import ocsf.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
 
 import application.Controller;
 import application.Request;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import ocsf.client.AbstractClient;
 
 public class ChatClient extends AbstractClient {
 
