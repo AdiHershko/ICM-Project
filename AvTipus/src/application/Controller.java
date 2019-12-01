@@ -340,7 +340,7 @@ public class Controller {
 	public void searchTable() {
 		try {
 			String text = getSerachFeild().getText();
-			if (text.equals("*")) {
+			if (text.equals("")) {
 				UserConsole._init.isSerach = false;
 
 			} else {

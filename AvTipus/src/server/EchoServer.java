@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import application.DataBaseController;
 import application.Request;
 import javafx.collections.ObservableList;
 import ocsf.server.AbstractServer;

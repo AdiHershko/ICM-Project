@@ -1,4 +1,4 @@
-package application;
+package server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import application.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
