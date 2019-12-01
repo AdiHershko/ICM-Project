@@ -106,7 +106,7 @@ public class Controller {
 
 	public void initialize() throws IOException {
 		Controller._ins = this;
-		client = new ChatClient("localhost", EchoServer.DEFAULT_PORT);
+		client = new ChatClient("localhost", ChatClient.DEFAULT_PORT);
 	}
 
 	public TextArea getStatusArea() {
