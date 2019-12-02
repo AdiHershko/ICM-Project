@@ -18,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import server.EchoServer;
+import server.ServerChooseController;
 
 public class Controller {
 
@@ -106,7 +107,9 @@ public class Controller {
 
 	public void initialize() throws IOException {
 		Controller._ins = this;
+
 		client = new ChatClient("localhost", ChatClient.DEFAULT_PORT);
+
 	}
 
 	public TextArea getStatusArea() {
@@ -343,7 +346,8 @@ public class Controller {
 			if (text.equals("")) {
 				UserConsole._init.isSerach = false;
 
-			} else {
+			}
+			else {
 				int id = Integer.parseUnsignedInt(text);
 				UserConsole._init.isSerach = true;
 				UserConsole._init.searchid = id;

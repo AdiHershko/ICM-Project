@@ -15,7 +15,7 @@ import ocsf.client.AbstractClient;
 
 public class ChatClient extends AbstractClient {
 
-	final public static int DEFAULT_PORT = 5555;
+	public static int DEFAULT_PORT = 5555;
 	
 	public ChatClient(String host, int port) throws IOException {
 		super(host, port); // Call the superclass constructor

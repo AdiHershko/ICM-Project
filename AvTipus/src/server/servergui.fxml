@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerChooseController">
    <children>
       <Label layoutX="548.0" layoutY="14.0" text="ICM - Server" textFill="RED">
          <font>
@@ -25,22 +24,12 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="74.0" layoutY="245.0" text="Pleases choose SQL Database:">
+      <Label layoutX="77.0" layoutY="186.0" text="Pleases choose SQL Database:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <RadioButton fx:id="remotebtn" layoutX="74.0" layoutY="283.0" mnemonicParsing="false" text="Our Remote SQL Database">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </RadioButton>
-      <RadioButton fx:id="localbtn" layoutX="74.0" layoutY="322.0" mnemonicParsing="false" text="Local SQL Server (needs to have scheme and tables for ICM)">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </RadioButton>
-      <Pane layoutX="104.0" layoutY="362.0" prefHeight="223.0" prefWidth="534.0">
+      <Pane fx:id="serverPane" layoutX="67.0" layoutY="322.0" prefHeight="223.0" prefWidth="534.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="MySQL host:">
                <font>
@@ -74,16 +63,17 @@
             <TextField fx:id="passfield" layoutX="121.0" layoutY="147.0" />
          </children>
       </Pane>
-      <Label layoutX="74.0" layoutY="198.0" text="Please enter the server port:">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <TextField fx:id="portfield" layoutX="328.0" layoutY="198.0" prefHeight="31.0" prefWidth="129.0" />
-      <Button fx:id="connectbtn" layoutX="612.0" layoutY="563.0" mnemonicParsing="false" text="Connect">
+      <Button fx:id="connectbtn" layoutX="612.0" layoutY="563.0" mnemonicParsing="false" onAction="#connect" text="Connect">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
+      <ChoiceBox fx:id="choiceBox" layoutX="67.0" layoutY="288.0" prefHeight="25.0" prefWidth="362.0" />
+      <Label layoutX="77.0" layoutY="249.0" text="server port:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="S_portField" layoutX="185.0" layoutY="250.0" text="5555" />
    </children>
 </Pane>

@@ -17,9 +17,14 @@ public class DataBaseController {
 	private static String url = "jdbc:mysql://remotemysql.com:3306/jsyC4yp1qF?useLegacyDatetimeCode=false&serverTimezone=UTC";
 	private static String username = "jsyC4yp1qF";
 	private static String password = "50MjwBICSL";
+	
 
-	public static void Connect() {
+	
+	
+	
+	public static boolean Connect() {
 
+		
 		System.out.println("Connecting to database...");
 
 		try {
@@ -27,7 +32,21 @@ public class DataBaseController {
 			System.out.println("Database connected!");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
+	}
+
+	public static void setUrl(String url) {
+		DataBaseController.url = url;
+	}
+
+	public static void setUsername(String username) {
+		DataBaseController.username = username;
+	}
+
+	public static void setPassword(String password) {
+		DataBaseController.password = password;
 	}
 
 	public static ObservableList<Request> getTable() {

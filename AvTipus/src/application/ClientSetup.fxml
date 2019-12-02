@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="552.0" layoutY="14.0" text="ICM - Client" textFill="RED">
@@ -47,7 +46,7 @@
             <Font size="20.0" />
          </font>
       </RadioButton>
-      <Label layoutX="74.0" layoutY="235.0" text="This is the client application.">
+      <Label layoutX="74.0" layoutY="235.0" text="This is the client application:">
          <font>
             <Font size="20.0" />
          </font>
