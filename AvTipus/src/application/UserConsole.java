@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class UserConsole extends Application {
 	public static UserConsole _init;
 	Pane root;
-	Stage stage;
+	static Stage stage;
 	Controller c;
 	TableView<Request> table;
 	boolean isSerach = false;

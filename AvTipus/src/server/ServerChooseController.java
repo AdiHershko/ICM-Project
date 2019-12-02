@@ -1,5 +1,6 @@
 package server;
 
+import application.UserConsole;
 import client.ChatClient;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class ServerChooseController {
 
+	// components
 	@FXML
 	private TextField hostfield;
 	@FXML
@@ -31,7 +33,18 @@ public class ServerChooseController {
 	@FXML
 	private TextField passfield;
 	@FXML
-	private  TextField S_portField;
+	private TextField S_portField;
+
+	@FXML
+	private Button connectbtn;
+	@FXML
+	private ChoiceBox<String> choiceBox = new ChoiceBox<String>();
+
+	// getters and setters
+
+	public Pane getServerPane() {
+		return serverPane;
+	}
 
 	public TextField getS_portField() {
 		return S_portField;
@@ -39,58 +52,6 @@ public class ServerChooseController {
 
 	public void setS_portField(TextField s_portField) {
 		S_portField = s_portField;
-	}
-
-	@FXML
-	private Button connectbtn;
-	@FXML
-	private ChoiceBox<String> choiceBox = new ChoiceBox<String>();
-
-	public Pane getServerPane() {
-		return serverPane;
-	}
-
-	@FXML
-	void connect(ActionEvent event) {
-
-		if (choiceBox.getValue().equals("Local SQL Server, needs to have scheme and tables for ICM")) {
-			String temp = "jdbc:mysql://";
-			temp += hostfield.getText();
-			temp += ":";
-			temp += portfield.getText();
-			temp += "/";
-			temp += dbfield.getText();
-			temp += "?useLegacyDatetimeCode=false&serverTimezone=UTC";
-			DataBaseController.setUrl(temp);
-			DataBaseController.setPassword(passfield.getText());
-			DataBaseController.setUsername(unfield.getText());
-		}
-		
-		int temp = EchoServer.Start(Integer.valueOf(getS_portField().getText()));
-		if (temp == 1) {
-			ServerConsole.stage.close();
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("ERROR!");
-			alert.setContentText("connection to database failed");
-			alert.show();
-
-		}
-		else if (temp == 2) {
-			ServerConsole.stage.close();
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("ERROR!");
-			alert.setContentText("can't listen to client");
-			alert.show();
-		}
-		else {
-			ChatClient.DEFAULT_PORT=Integer.valueOf(getS_portField().getText());
-			ServerConsole.stage.close();
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Successful");
-			alert.setContentText("system connected!");
-			alert.show();
-		}
-
 	}
 
 	public TextField getHostfield() {
@@ -149,11 +110,61 @@ public class ServerChooseController {
 		this.serverPane = serverPane;
 	}
 
-	public void onBoxChange() {
+	// system connection
+
+	@FXML
+	void connect(ActionEvent event) {
+
 		if (choiceBox.getValue().equals("Local SQL Server, needs to have scheme and tables for ICM")) {
-			serverPane.setVisible(true);
+			String temp = "jdbc:mysql://";
+			temp += hostfield.getText();
+			temp += ":";
+			temp += portfield.getText();
+			temp += "/";
+			temp += dbfield.getText();
+			temp += "?useLegacyDatetimeCode=false&serverTimezone=UTC";
+			DataBaseController.setUrl(temp);
+			DataBaseController.setPassword(passfield.getText());
+			DataBaseController.setUsername(unfield.getText());
 		}
+
+		int temp = 1;
+		try {
+			temp = EchoServer.Start(Integer.parseInt((getS_portField().getText())));
+		} catch (NumberFormatException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR!");
+			alert.setContentText("not number in port field");
+			alert.show();
+			return;
+		}
+		if (temp == 1) {
+			ServerConsole.stage.close();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR!");
+			alert.setContentText("connection to database failed");
+			alert.show();
+
+		}
+		else if (temp == 2) {
+			ServerConsole.stage.close();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR!");
+			alert.setContentText("can't listen to client");
+			alert.show();
+		}
+		else {
+
+			ServerConsole.stage.close();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Successful");
+			alert.setContentText("system connected!");
+			alert.show();
+		}
+
 	}
+
+	//tracking server choice
 
 	public void setChoiceBox() {
 		choiceBox.getItems().add("Our Remote SQL Database");

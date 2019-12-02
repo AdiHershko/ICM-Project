@@ -41,9 +41,9 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="hostfield" layoutX="121.0" layoutY="12.0" />
-            <TextField fx:id="portfield" layoutX="121.0" layoutY="46.0" />
-            <TextField fx:id="dbfield" layoutX="121.0" layoutY="80.0" />
+            <TextField fx:id="hostfield" layoutX="121.0" layoutY="12.0" text="localhost" />
+            <TextField fx:id="portfield" layoutX="121.0" layoutY="46.0" text="3306" />
+            <TextField fx:id="dbfield" layoutX="121.0" layoutY="80.0" text="avtipus" />
             <Label layoutX="34.0" layoutY="83.0" text="Database:">
                <font>
                   <Font size="18.0" />
