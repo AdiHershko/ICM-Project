@@ -303,7 +303,7 @@ public class Controller {
 			alert.setTitle("ERROR!");
 			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 			alert.show();
-			e2.printStackTrace();
+			
 			return;
 		}
 		refreshTable();
@@ -328,7 +328,7 @@ public class Controller {
 			alert.setTitle("ERROR!");
 			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 			alert.show();
-			e2.printStackTrace();
+			
 			return;
 		}
 		refreshTable();
@@ -354,7 +354,7 @@ public class Controller {
 			alert.setTitle("ERROR!");
 			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 			alert.show();
-			e2.printStackTrace();
+			
 			return;
 		}
 		refreshTable();
