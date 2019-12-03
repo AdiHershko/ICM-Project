@@ -63,7 +63,7 @@
             <TextField fx:id="passfield" layoutX="121.0" layoutY="147.0" />
          </children>
       </Pane>
-      <Button fx:id="connectbtn" layoutX="612.0" layoutY="563.0" mnemonicParsing="false" onAction="#connect" text="Connect">
+      <Button fx:id="connectbtn" layoutX="480.0" layoutY="564.0" mnemonicParsing="false" onAction="#connect" text="Connect">
          <font>
             <Font size="20.0" />
          </font>
@@ -75,5 +75,10 @@
          </font>
       </Label>
       <TextField fx:id="S_portField" layoutX="185.0" layoutY="250.0" text="5555" />
+      <Button fx:id="disconnectbtn" layoutX="676.0" layoutY="564.0" mnemonicParsing="false" onAction="#disconnect" text="disconnect">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

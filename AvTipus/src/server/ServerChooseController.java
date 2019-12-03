@@ -155,7 +155,6 @@ public class ServerChooseController {
 		}
 		else {
 
-			ServerConsole.stage.close();
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Successful");
 			alert.setContentText("system connected!");
@@ -164,6 +163,9 @@ public class ServerChooseController {
 
 	}
 
+	public void disconnect() {
+		System.exit(1);
+	}
 	//tracking server choice
 
 	public void setChoiceBox() {

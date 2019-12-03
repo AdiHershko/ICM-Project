@@ -12,8 +12,6 @@ import ocsf.server.ConnectionToClient;
 public class EchoServer extends AbstractServer {
 	final private static int DEFAULT_PORT = 5555;
 
-	
-
 	public static int getDefaultPort() {
 		return DEFAULT_PORT;
 	}
@@ -73,7 +71,7 @@ public class EchoServer extends AbstractServer {
 			String str = arr.subList(1, arr.size()).toString();
 			str = str.substring(1, str.length() - 1);
 			int id = Integer.parseInt(arr.get(1));
-			str=str.substring(3);
+			str = str.substring(3);
 			try {
 				DataBaseController.changeChanges(id, str);
 			} catch (Exception e) {
@@ -90,7 +88,7 @@ public class EchoServer extends AbstractServer {
 			String str = arr.subList(1, arr.size()).toString();
 			str = str.substring(1, str.length() - 1);
 			int id = Integer.parseInt(arr.get(1));
-			str=str.substring(3);
+			str = str.substring(3);
 			try {
 				DataBaseController.changeDescription(id, str);
 			} catch (Exception e) {
@@ -107,7 +105,7 @@ public class EchoServer extends AbstractServer {
 			String str = arr.subList(1, arr.size()).toString();
 			str = str.substring(1, str.length() - 1);
 			int id = Integer.parseInt(arr.get(1));
-			str=str.substring(3);
+			str = str.substring(3);
 			try {
 				DataBaseController.changeStatus(id, str);
 			} catch (Exception e) {
@@ -131,11 +129,13 @@ public class EchoServer extends AbstractServer {
 		System.out.println("Server has stopped listening for connections.");
 	}
 
+	
+
 	public static int Start(int port) {
-		if(DataBaseController.Connect()==false) {
+		if (DataBaseController.Connect() == false) {
 			return 1;
 		}
-		
+
 		EchoServer sv = new EchoServer(port);
 		try {
 			sv.listen(); // Start listening for connections

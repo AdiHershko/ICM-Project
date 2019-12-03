@@ -11,12 +11,14 @@ import application.Request;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import ocsf.client.AbstractClient;
 
 public class ChatClient extends AbstractClient {
 
 	final public static int DEFAULT_PORT = 5555;
-	
+
 	public ChatClient(String host, int port) throws IOException {
 		super(host, port); // Call the superclass constructor
 		openConnection();
@@ -30,31 +32,29 @@ public class ChatClient extends AbstractClient {
 			System.out.println("from server: " + msg);
 		}
 		if (msg instanceof Object[]) {
-			/*Platform.runLater(new Runnable() { TODO
-				@Override
-				public void run() {
-					ObservableList<Request> l = FXCollections.observableArrayList();
-					for (Object o : (Object[]) msg) {
-						l.add((Request) o);
-					}
-					Controller._ins.table.setItems(l);
-				}
-			});	*/
+			/*
+			 * Platform.runLater(new Runnable() { TODO
+			 * 
+			 * @Override public void run() { ObservableList<Request> l =
+			 * FXCollections.observableArrayList(); for (Object o : (Object[]) msg) {
+			 * l.add((Request) o); } Controller._ins.table.setItems(l); } });
+			 */
 			ObservableList<Request> l = FXCollections.observableArrayList();
 			for (Object o : (Object[]) msg) {
 				l.add((Request) o);
 			}
 			Controller._ins.table.setItems(l);
 			Controller.ref_mutex = false;
-		}		
+		}
 	}
 
 	public void handleMessageFromClientUI(Object message) {
 		try {
 			sendToServer(message);
 		} catch (IOException e) {
-			System.out.println("sending message to server failed");
 			quit();
+			
+
 		}
 	}
 
@@ -64,5 +64,6 @@ public class ChatClient extends AbstractClient {
 		} catch (IOException e) {
 		}
 		System.exit(0);
+		
 	}
 }
