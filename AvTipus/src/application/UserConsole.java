@@ -36,13 +36,6 @@ public class UserConsole extends Application {
 		stage.setScene(s);
 		stage.setTitle("ICM - Prototype");
 		stage.show();
-		c.setTable();
-		c.refreshTable();
-		c.getDescArea().setWrapText(true);
-		c.getChangesArea().setWrapText(true);
-		c.getChangesEditButton().setVisible(false);
-		c.getDescEditButton().setVisible(false);
-		c.getStatusEditButton().setVisible(false);
 	}
 
 	public static void main(String[] args) {

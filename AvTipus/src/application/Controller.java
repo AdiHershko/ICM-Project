@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -17,12 +18,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import server.EchoServer;
-import server.ServerChooseController;
+
 
 public class Controller {
 
 	public static boolean ref_mutex = false;
+	
 
 	public static Controller _ins;
 	@FXML
@@ -57,12 +58,26 @@ public class Controller {
 
 	@FXML
 	private Button addButton;
-
+	
+	@FXML
+	private Button ClientConnect;
+	
 	@FXML
 	private TextField addText;
+	
+	@FXML
+	private TextField IPTextBox;
+	@FXML
+	private RadioButton remoteRB;
+	@FXML
+	private RadioButton localRB;
 
 	@FXML
 	private Pane requestPane;
+	@FXML
+	private Pane mainPane;
+	@FXML
+	private Pane loginPane;
 
 	@FXML
 	private TextArea descArea;
@@ -107,9 +122,35 @@ public class Controller {
 
 	public void initialize() throws IOException {
 		Controller._ins = this;
-
-		client = new ChatClient("localhost", ChatClient.DEFAULT_PORT);
-
+	}
+	
+	
+	@FXML
+	public void connectToServer() {
+		try {
+		if(localRB.isSelected()) {
+			client = new ChatClient("localhost", ChatClient.DEFAULT_PORT);
+		}
+		if(remoteRB.isSelected()) {
+			String[] temp=IPTextBox.getText().split(":");
+			client = new ChatClient(temp[0], Integer.parseInt(temp[1]));
+		}
+		} catch(Exception e){
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("can't connect to server!");
+			alert.setContentText("can't connect to server!");
+			alert.show();
+		}
+		mainPane.setVisible(true);
+		loginPane.setVisible(false);
+		setTable();
+		refreshTable();
+		getDescArea().setWrapText(true);
+		getChangesArea().setWrapText(true);
+		getChangesEditButton().setVisible(false);
+		getDescEditButton().setVisible(false);
+		getStatusEditButton().setVisible(false);
+		
 	}
 
 	public TextArea getStatusArea() {
