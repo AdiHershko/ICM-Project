@@ -34,7 +34,7 @@ public class UserConsole extends Application {
 		}
 		Scene s = new Scene(root);
 		stage.setScene(s);
-		stage.setTitle("ICM - Prototype");
+		stage.setTitle("ICM Prototype - Client");
 		stage.show();
 	}
 

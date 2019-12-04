@@ -34,7 +34,7 @@ public class ServerConsole extends Application {
 		
 		Scene s = new Scene(root);
 		stage.setScene(s);
-		stage.setTitle("server setup");
+		stage.setTitle("ICM Prototype - Server");
 		
 		stage.show();
 		

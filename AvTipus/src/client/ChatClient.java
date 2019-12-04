@@ -53,8 +53,6 @@ public class ChatClient extends AbstractClient {
 			sendToServer(message);
 		} catch (IOException e) {
 			quit();
-			
-
 		}
 	}
 
