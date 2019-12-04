@@ -19,11 +19,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-
 public class Controller {
 
 	public static boolean ref_mutex = false;
-	
 
 	public static Controller _ins;
 	@FXML
@@ -58,13 +56,13 @@ public class Controller {
 
 	@FXML
 	private Button addButton;
-	
+
 	@FXML
 	private Button ClientConnect;
-	
+
 	@FXML
 	private TextField addText;
-	
+
 	@FXML
 	private TextField IPTextBox;
 	@FXML
@@ -123,34 +121,37 @@ public class Controller {
 	public void initialize() throws IOException {
 		Controller._ins = this;
 	}
-	
-	
+
 	@FXML
 	public void connectToServer() {
+		boolean isconnected = false;
 		try {
-		if(localRB.isSelected()) {
-			client = new ChatClient("localhost", ChatClient.DEFAULT_PORT);
-		}
-		if(remoteRB.isSelected()) {
-			String[] temp=IPTextBox.getText().split(":");
-			client = new ChatClient(temp[0], Integer.parseInt(temp[1]));
-		}
-		} catch(Exception e){
+			if (localRB.isSelected()) {
+				client = new ChatClient("localhost", ChatClient.DEFAULT_PORT);
+			}
+			if (remoteRB.isSelected()) {
+				String[] temp = IPTextBox.getText().split(":");
+				client = new ChatClient(temp[0], Integer.parseInt(temp[1]));
+			}
+			isconnected = true;
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("can't connect to server!");
-			alert.setContentText("can't connect to server!");
+			alert.setTitle("Can't connect to server!");
+			alert.setContentText("Can't connect to server!");
 			alert.show();
 		}
-		mainPane.setVisible(true);
-		loginPane.setVisible(false);
-		setTable();
-		refreshTable();
-		getDescArea().setWrapText(true);
-		getChangesArea().setWrapText(true);
-		getChangesEditButton().setVisible(false);
-		getDescEditButton().setVisible(false);
-		getStatusEditButton().setVisible(false);
-		
+		if (isconnected) {
+			mainPane.setVisible(true);
+			loginPane.setVisible(false);
+			setTable();
+			refreshTable();
+			getDescArea().setWrapText(true);
+			getChangesArea().setWrapText(true);
+			getChangesEditButton().setVisible(false);
+			getDescEditButton().setVisible(false);
+			getStatusEditButton().setVisible(false);
+		}
+
 	}
 
 	public TextArea getStatusArea() {
@@ -303,7 +304,7 @@ public class Controller {
 			alert.setTitle("ERROR!");
 			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 			alert.show();
-			
+
 			return;
 		}
 		refreshTable();
@@ -328,7 +329,7 @@ public class Controller {
 			alert.setTitle("ERROR!");
 			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 			alert.show();
-			
+
 			return;
 		}
 		refreshTable();
@@ -354,7 +355,7 @@ public class Controller {
 			alert.setTitle("ERROR!");
 			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
 			alert.show();
-			
+
 			return;
 		}
 		refreshTable();
@@ -387,8 +388,7 @@ public class Controller {
 			if (text.equals("")) {
 				UserConsole._init.isSerach = false;
 
-			}
-			else {
+			} else {
 				int id = Integer.parseUnsignedInt(text);
 				UserConsole._init.isSerach = true;
 				UserConsole._init.searchid = id;

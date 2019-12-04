@@ -133,30 +133,28 @@ public class ServerChooseController {
 		} catch (NumberFormatException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
-			alert.setContentText("not number in port field");
+			alert.setContentText("No number in port field");
 			alert.show();
 			return;
 		}
 		if (temp == 1) {
-			ServerConsole.stage.close();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
-			alert.setContentText("connection to database failed");
+			alert.setContentText("Connection to DB failed");
 			alert.show();
 
 		}
 		else if (temp == 2) {
-			ServerConsole.stage.close();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
-			alert.setContentText("can't listen to client");
+			alert.setContentText("Can't listen to client");
 			alert.show();
 		}
 		else {
 
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Successful");
-			alert.setContentText("system connected!");
+			alert.setContentText("System connected!");
 			alert.show();
 		}
 
