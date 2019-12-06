@@ -15,7 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Dialog;
-import ocsf.client.AbstractClient;
 
 public class ChatClient extends AbstractClient {
 
