@@ -4,7 +4,6 @@
 
 package client;
 
-import java.awt.JobAttributes.DialogType;
 import java.io.IOException;
 
 import application.Controller;
@@ -19,7 +18,7 @@ import javafx.scene.control.Dialog;
 public class ChatClient extends AbstractClient {
 
 	final public static int DEFAULT_PORT = 5555;
-	Dialog<Boolean> noConnection = new Dialog();
+	Dialog<Boolean> noConnection = new Dialog<>();
 
 	public ChatClient(String host, int port) throws IOException {
 		super(host, port); // Call the superclass constructor
