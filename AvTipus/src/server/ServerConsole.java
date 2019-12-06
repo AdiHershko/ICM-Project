@@ -3,10 +3,12 @@ package server;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ServerConsole extends Application {
 	public static ServerConsole _init;
@@ -39,7 +41,12 @@ public class ServerConsole extends Application {
 		stage.show();
 		
 		
-		
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		    @Override
+		    public void handle(WindowEvent t) {
+		        System.exit(0);
+		    }
+		});
 	}
 
 	public static void main(String[] args) {

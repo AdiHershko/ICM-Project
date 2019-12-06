@@ -3,11 +3,13 @@ package application;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class UserConsole extends Application {
 	public static UserConsole _init;
@@ -36,6 +38,13 @@ public class UserConsole extends Application {
 		stage.setScene(s);
 		stage.setTitle("ICM Prototype - Client");
 		stage.show();
+		
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		    @Override
+		    public void handle(WindowEvent t) {
+		        System.exit(0);
+		    }
+		});
 	}
 
 	public static void main(String[] args) {

@@ -52,6 +52,10 @@ public class ChatClient extends AbstractClient {
 		try {
 			sendToServer(message);
 		} catch (IOException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR!");
+			alert.setContentText("Server disconnected\nExiting application");
+			alert.showAndWait();
 			quit();
 		}
 	}
