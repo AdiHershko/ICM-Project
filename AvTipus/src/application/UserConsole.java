@@ -38,7 +38,7 @@ public class UserConsole extends Application {
 		stage.setScene(s);
 		stage.setTitle("ICM Prototype - Client");
 		stage.show();
-		
+
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		    @Override
 		    public void handle(WindowEvent t) {

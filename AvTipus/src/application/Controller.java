@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 public class Controller {
 
@@ -69,7 +70,10 @@ public class Controller {
 	private RadioButton remoteRB;
 	@FXML
 	private RadioButton localRB;
-
+	@FXML
+	private Text descLimitText;
+	@FXML
+	private Text changesLimitText;
 	@FXML
 	private Pane requestPane;
 	@FXML
@@ -120,7 +124,44 @@ public class Controller {
 
 	public void initialize() throws IOException {
 		Controller._ins = this;
+		/*
+		 * This counts words in the text fields and prevents users from entering more characters than db limit.
+		 */
+		new Thread(){
+			public void run()
+			{
+				while(true)
+				{
+					if (descLimitText.getText().length()>=0||changesLimitText.getText().length()>=0)
+					{
+						try {
+						descLimitText.setText(descArea.getText().length()+"/1000");
+						changesLimitText.setText(changesArea.getText().length()+"/1000");
+						if (descArea.getText().length()>1000)
+							{
+							descArea.setEditable(false);
+							descArea.setText(descArea.getText().substring(0,1000));
+							descArea.setEditable(true);
+							descArea.positionCaret(1000);
+							}
+						if (changesArea.getText().length()>1000)
+						{
+							changesArea.setEditable(false);
+							changesArea.setText(changesArea.getText().substring(0,1000));
+							changesArea.setEditable(true);
+							changesArea.positionCaret(1000);
+						}
+						} catch (IndexOutOfBoundsException e) { }
+
+						try {
+							Thread.sleep(100);
+						} catch(InterruptedException e) {}
+					}
+				}
+			}
+		}.start();
 	}
+
 
 	@FXML
 	public void connectToServer() {
@@ -252,12 +293,14 @@ public class Controller {
 	public void editDesc() {
 		getDescArea().setEditable(true);
 		getSaveDescButton().setVisible(true);
+		descLimitText.setVisible(true);
 	}
 
 	@FXML
 	public void editChanges() {
 		getChangesArea().setEditable(true);
 		getSaveChangesButton().setVisible(true);
+		changesLimitText.setVisible(true);
 	}
 
 	@FXML
@@ -311,6 +354,7 @@ public class Controller {
 		table.getSelectionModel().select(i);
 		getChangesArea().setEditable(false);
 		getSaveChangesButton().setVisible(false);
+		changesLimitText.setVisible(false);
 	}
 
 	@FXML
@@ -336,6 +380,7 @@ public class Controller {
 		table.getSelectionModel().select(i);
 		getDescArea().setEditable(false);
 		getSaveDescButton().setVisible(false);
+		descLimitText.setVisible(false);
 	}
 
 	@FXML

@@ -76,6 +76,8 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
+                  <Text fx:id="descLimitText" layoutX="337.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0/1000" visible="false" />
+                  <Text fx:id="changesLimitText" layoutX="337.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0/1000" visible="false" />
                </children>
             </Pane>
          </children>
