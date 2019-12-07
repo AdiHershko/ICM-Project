@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
       <Pane fx:id="mainPane" prefHeight="600.0" prefWidth="1200.0" visible="false">
          <children>
@@ -77,7 +77,7 @@
                   </Label>
                   <Text fx:id="descLimitText" layoutX="337.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0/1000" visible="false" />
                   <Text fx:id="changesLimitText" layoutX="337.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0/1000" visible="false" />
-                  <Button fx:id="choiceBoxEdit" layoutX="369.0" layoutY="483.0" mnemonicParsing="false" onAction="#savingStatus" text="Save" />
+                  <Button fx:id="choiceBoxEdit" layoutX="317.0" layoutY="483.0" mnemonicParsing="false" onAction="#savingStatus" text="Save" />
                </children>
             </Pane>
          </children>
