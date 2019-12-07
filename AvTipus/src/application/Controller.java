@@ -260,7 +260,7 @@ public class Controller {
 			getChangesEditButton().setVisible(true);
 			getDescEditButton().setVisible(true);
 			getchoiceBoxEdit().setVisible(true);
-			
+
 			getSaveDescButton().setVisible(false);
 			getSaveChangesButton().setVisible(false);
 			getDescArea().setEditable(false);
@@ -290,10 +290,15 @@ public class Controller {
 	public void addToTable() {
 		try {
 			String txt = gettAddText().getText().toString();
+			ArrayList<String> status = new ArrayList<String>();
+			status.add("Active");
+			status.add("Closed");
+			status.add("Frozen");
+
 			ArrayList<String> arr = new ArrayList<>(Arrays.asList(txt.split(",")));
 			if (arr.size() != 6 || Integer.parseInt(arr.get(1)) > 5 || Integer.parseInt(arr.get(1)) < 0
 					|| arr.get(0).length() > 100 || arr.get(2).length() > 1000 || arr.get(3).length() > 1000
-					|| arr.get(4).length() > 100 || arr.get(5).length() > 100) {
+					|| arr.get(4).length() > 100 || arr.get(5).length() > 100 || !status.contains(arr.get(4))) {
 				throw new Exception("Wrong parameters");
 			}
 			client.handleMessageFromClientUI("ADDLINE," + txt);
@@ -302,8 +307,9 @@ public class Controller {
 		} catch (Exception e1) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Wrong parameters!");
-			alert.setContentText("Please enter 6 parameters:\n" + "string,INT,string,string,string,string\n"
-					+ "The int is 0-5\n" + "The strings are up to 1000 characters");
+			alert.setContentText(
+					"Please enter 6 parameters:\n" + "string,INT,string,string,string,string\n" + "The int is 0-5\n"
+							+ "The strings are up to 1000 characters\nThe status is Active | Closed | Frozen");
 			alert.show();
 		}
 	}

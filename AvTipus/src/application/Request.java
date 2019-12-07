@@ -15,7 +15,7 @@ public class Request implements Serializable {
 	private String change;
 	private String handler;
 	private String status;
-
+	
 	public Request(int id, String name, int system, String desc, String change, String status, String handler) {
 		this.id = id;
 		this.name = name;
@@ -111,20 +111,4 @@ public class Request implements Serializable {
 			return null;
 		}
 	}
-
-	enum StatusEnum {
-		Active, Closed, Frozen;
-		public static StatusEnum getByInt(int i) {
-			switch (i) {
-			case 0:
-				return Active;
-			case 1:
-				return Closed;
-			case 2:
-				return Frozen;
-			}
-			return null;
-		}
-	}
-
 }

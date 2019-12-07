@@ -24,20 +24,15 @@ public class ChatClient extends AbstractClient {
 		super(host, port); // Call the superclass constructor
 		openConnection();
 		System.out.println("Client connected");
-		//-----------Checking if server is connected every 5 seconds.
-		new Thread(){
-			public void run()
-			{
-				while (true)
-				{
-					if (!isConnected())
-					{
-						Platform.runLater(new Runnable(){
-							public void run()
-							{
+		// -----------Checking if server is connected every 5 seconds.
+		new Thread() {
+			public void run() {
+				while (true) {
+					if (!isConnected()) {
+						Platform.runLater(new Runnable() {
+							public void run() {
 								{
-									if (!noConnection.isShowing())
-									{
+									if (!noConnection.isShowing()) {
 										noConnection.setTitle("ERROR!");
 										noConnection.setContentText("Server disconnected\nTrying to reconnect...");
 										noConnection.show();
@@ -47,31 +42,35 @@ public class ChatClient extends AbstractClient {
 						});
 						try {
 							while (!openConnection()) {
-								try {Thread.sleep(3000);  }catch(InterruptedException e1) {}
+								try {
+									Thread.sleep(3000);
+								} catch (InterruptedException e1) {
+								}
 							}
-						} catch (IOException e) {  }
+						} catch (IOException e) {
+						}
 
-						Platform.runLater(new Runnable(){
-							public void run()
-							{
-							Alert connected = new Alert(AlertType.INFORMATION);
-							connected.setTitle("Reconnected!");
-							connected.setContentText("Reconnected to server!");
-							noConnection.setResult(Boolean.TRUE);
-							noConnection.close();
-							connected.show();
+						Platform.runLater(new Runnable() {
+							public void run() {
+								Alert connected = new Alert(AlertType.INFORMATION);
+								connected.setTitle("Reconnected!");
+								connected.setContentText("Reconnected to server!");
+								noConnection.setResult(Boolean.TRUE);
+								noConnection.close();
+								connected.show();
 							}
 						});
 
 					}
-					try{
+					try {
 						Thread.sleep(5000);
-					} catch(InterruptedException e) {}
+					} catch (InterruptedException e) {
+					}
 
 				}
 			}
 		}.start();
-   //-------------------------------------------------
+		// -------------------------------------------------
 	}
 
 	public void handleMessageFromServer(Object msg) {
