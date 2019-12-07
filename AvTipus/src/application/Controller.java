@@ -5,10 +5,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import client.ChatClient;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -25,6 +31,7 @@ public class Controller {
 	public static boolean ref_mutex = false;
 
 	public static Controller _ins;
+	ObservableList list = FXCollections.observableArrayList();
 	@FXML
 	private Pane pane;
 
@@ -103,15 +110,6 @@ public class Controller {
 	private Button saveChangesButton;
 
 	@FXML
-	private TextArea statusArea;
-
-	@FXML
-	private Button statusEditButton;
-
-	@FXML
-	private Button saveStatusButton;
-
-	@FXML
 	private Label idLabel;
 
 	@FXML
@@ -119,49 +117,49 @@ public class Controller {
 
 	@FXML
 	private Button SearchButton;
+	@FXML
+	private Button choiceBoxEdit;
 
 	ChatClient client;
 
 	public void initialize() throws IOException {
 		Controller._ins = this;
+		loadData();
 		/*
-		 * This counts words in the text fields and prevents users from entering more characters than db limit.
+		 * This counts words in the text fields and prevents users from entering more
+		 * characters than db limit.
 		 */
-		new Thread(){
-			public void run()
-			{
-				while(true)
-				{
-					if (descLimitText.getText().length()>=0||changesLimitText.getText().length()>=0)
-					{
+		new Thread() {
+			public void run() {
+				while (true) {
+					if (descLimitText.getText().length() >= 0 || changesLimitText.getText().length() >= 0) {
 						try {
-						descLimitText.setText(descArea.getText().length()+"/1000");
-						changesLimitText.setText(changesArea.getText().length()+"/1000");
-						if (descArea.getText().length()>1000)
-							{
-							descArea.setEditable(false);
-							descArea.setText(descArea.getText().substring(0,1000));
-							descArea.setEditable(true);
-							descArea.positionCaret(1000);
+							descLimitText.setText(descArea.getText().length() + "/1000");
+							changesLimitText.setText(changesArea.getText().length() + "/1000");
+							if (descArea.getText().length() > 1000) {
+								descArea.setEditable(false);
+								descArea.setText(descArea.getText().substring(0, 1000));
+								descArea.setEditable(true);
+								descArea.positionCaret(1000);
 							}
-						if (changesArea.getText().length()>1000)
-						{
-							changesArea.setEditable(false);
-							changesArea.setText(changesArea.getText().substring(0,1000));
-							changesArea.setEditable(true);
-							changesArea.positionCaret(1000);
+							if (changesArea.getText().length() > 1000) {
+								changesArea.setEditable(false);
+								changesArea.setText(changesArea.getText().substring(0, 1000));
+								changesArea.setEditable(true);
+								changesArea.positionCaret(1000);
+							}
+						} catch (IndexOutOfBoundsException e) {
 						}
-						} catch (IndexOutOfBoundsException e) { }
 
 						try {
 							Thread.sleep(100);
-						} catch(InterruptedException e) {}
+						} catch (InterruptedException e) {
+						}
 					}
 				}
 			}
 		}.start();
 	}
-
 
 	@FXML
 	public void connectToServer() {
@@ -190,33 +188,9 @@ public class Controller {
 			getChangesArea().setWrapText(true);
 			getChangesEditButton().setVisible(false);
 			getDescEditButton().setVisible(false);
-			getStatusEditButton().setVisible(false);
+			getchoiceBoxEdit().setVisible(false);
 		}
 
-	}
-
-	public TextArea getStatusArea() {
-		return statusArea;
-	}
-
-	public void setStatusArea(TextArea statusArea) {
-		this.statusArea = statusArea;
-	}
-
-	public Button getStatusEditButton() {
-		return statusEditButton;
-	}
-
-	public void setStatusEditButton(Button statusEditButton) {
-		this.statusEditButton = statusEditButton;
-	}
-
-	public Button getSaveStatusButton() {
-		return saveStatusButton;
-	}
-
-	public void setSaveStatusButton(Button saveStatusButton) {
-		this.saveStatusButton = saveStatusButton;
 	}
 
 	public Button getDescEditButton() {
@@ -229,6 +203,10 @@ public class Controller {
 
 	public Button getSaveDescButton() {
 		return saveDescButton;
+	}
+
+	public Button getchoiceBoxEdit() {
+		return choiceBoxEdit;
 	}
 
 	public Button getSaveChangesButton() {
@@ -264,6 +242,13 @@ public class Controller {
 	}
 
 	@FXML
+	private ChoiceBox<String> choiceBox;
+
+	public ChoiceBox<String> getChoiceBox() {
+		return choiceBox;
+	}
+
+	@FXML
 	public void showRequest(MouseEvent event) {
 		Request r;
 		try {
@@ -271,18 +256,16 @@ public class Controller {
 			getDescArea().setText(r.getDesc());
 			getChangesArea().setText(r.getChange());
 			getHandlerLabel().setText(r.getHandler());
-			getStatusArea().setText(r.getStatus());
 			getIdLabel().setText(Integer.toString(r.getId()));
-
 			getChangesEditButton().setVisible(true);
 			getDescEditButton().setVisible(true);
-			getStatusEditButton().setVisible(true);
+			getchoiceBoxEdit().setVisible(true);
+			
 			getSaveDescButton().setVisible(false);
 			getSaveChangesButton().setVisible(false);
-			getSaveStatusButton().setVisible(false);
 			getDescArea().setEditable(false);
 			getChangesArea().setEditable(false);
-			getStatusArea().setEditable(false);
+			getChoiceBox().setValue(r.getStatus());
 		} catch (Exception e) {
 			return;
 		}
@@ -301,12 +284,6 @@ public class Controller {
 		getChangesArea().setEditable(true);
 		getSaveChangesButton().setVisible(true);
 		changesLimitText.setVisible(true);
-	}
-
-	@FXML
-	void editStatus() {
-		getStatusArea().setEditable(true);
-		getSaveStatusButton().setVisible(true);
 	}
 
 	@FXML
@@ -383,32 +360,6 @@ public class Controller {
 		descLimitText.setVisible(false);
 	}
 
-	@FXML
-	public void saveChangeStatus() {
-		Request r;
-		r = table.getSelectionModel().getSelectedItem();
-		int i = table.getSelectionModel().getSelectedIndex();
-		try {
-			String text = getStatusArea().getText();
-			if (text.length() > 100)
-				throw new Exception("Too long text");
-			r.setStatus(text);
-			client.handleMessageFromClientUI("CHANGESTATUS," + r.getId() + "," + text);
-
-		} catch (Exception e2) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("ERROR!");
-			alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
-			alert.show();
-
-			return;
-		}
-		refreshTable();
-		table.getSelectionModel().select(i);
-		getStatusArea().setEditable(false);
-		getSaveStatusButton().setVisible(false);
-	}
-
 	public void refreshTable() {
 		ref_mutex = true;
 		if (UserConsole._init.isSerach == false) {
@@ -442,19 +393,18 @@ public class Controller {
 			getDescArea().setText("");
 			getChangesArea().setText("");
 			getHandlerLabel().setText("");
-			getStatusArea().setText("");
+
 			getIdLabel().setText("");
 
 			getChangesEditButton().setVisible(false);
 			getDescEditButton().setVisible(false);
-			getStatusEditButton().setVisible(false);
 
 			getSaveDescButton().setVisible(false);
 			getSaveChangesButton().setVisible(false);
-			getSaveStatusButton().setVisible(false);
+			getchoiceBoxEdit().setVisible(false);
 			getDescArea().setEditable(false);
 			getChangesArea().setEditable(false);
-			getStatusArea().setEditable(false);
+
 		} catch (Exception e1) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR!");
@@ -477,5 +427,79 @@ public class Controller {
 		table = (TableView<Request>) getTable();
 		table.getColumns().addAll(idColumn, nameColumn, systemColumn, statusColumn);
 		client.handleMessageFromClientUI("CONNECTED");
+	}
+
+	private void loadData() {
+		list.removeAll(list);
+		String a = "Active";
+		String b = "Closed";
+		String c = "Frozen";
+		list.addAll(a, b, c);
+		choiceBox.getItems().addAll(list);
+	}
+
+	public void savingStatus(ActionEvent event) {
+		if (choiceBox.getValue().equals("Active")) {
+			Request r;
+			r = table.getSelectionModel().getSelectedItem();
+			int i = table.getSelectionModel().getSelectedIndex();
+			try {
+				String text = "Active";
+				r.setStatus(text);
+				client.handleMessageFromClientUI("CHANGESTATUS," + r.getId() + "," + text);
+
+			} catch (Exception e2) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("ERROR!");
+				alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
+				alert.show();
+
+				return;
+			}
+			refreshTable();
+			table.getSelectionModel().select(i);
+
+		}
+		if (choiceBox.getValue().equals("Closed")) {
+			Request r;
+			r = table.getSelectionModel().getSelectedItem();
+			int i = table.getSelectionModel().getSelectedIndex();
+			try {
+				String text = "Closed";
+				r.setStatus(text);
+				client.handleMessageFromClientUI("CHANGESTATUS," + r.getId() + "," + text);
+
+			} catch (Exception e2) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("ERROR!");
+				alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
+				alert.show();
+
+				return;
+			}
+			refreshTable();
+			table.getSelectionModel().select(i);
+
+		}
+		if (choiceBox.getValue().equals("Frozen")) {
+			Request r;
+			r = table.getSelectionModel().getSelectedItem();
+			int i = table.getSelectionModel().getSelectedIndex();
+			try {
+				String text = "Frozen";
+				r.setStatus(text);
+				client.handleMessageFromClientUI("CHANGESTATUS," + r.getId() + "," + text);
+
+			} catch (Exception e2) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("ERROR!");
+				alert.setContentText(e2.getMessage() + "\nCouldn't save changes");
+				alert.show();
+
+				return;
+			}
+			refreshTable();
+			table.getSelectionModel().select(i);
+		}
 	}
 }
