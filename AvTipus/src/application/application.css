@@ -58,4 +58,8 @@
     -fx-background-color: #607D8B;
 }
 
+.choice-box .menu-item:focused { -fx-background-color: #607D8B; }
+
+.choice-box .context-menu { -fx-background-color: grey; }
+
 
