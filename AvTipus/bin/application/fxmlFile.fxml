@@ -47,9 +47,9 @@
                <children>
                   <ChoiceBox fx:id="choiceBox" layoutX="156.0" layoutY="483.0" prefWidth="150.0" />
                   <Label layoutX="7.0" layoutY="171.0" prefHeight="21.0" prefWidth="145.0" text="Request description:" />
-                  <TextArea fx:id="descArea" editable="false" layoutX="156.0" layoutY="132.0" prefHeight="126.0" prefWidth="603.0" />
+                  <TextArea fx:id="descArea" editable="false" layoutX="156.0" layoutY="132.0" prefHeight="126.0" prefWidth="603.0" styleClass="boxtext" />
                   <Label layoutX="7.0" layoutY="348.0" prefHeight="21.0" prefWidth="145.0" text="Needed changes:" />
-                  <TextArea fx:id="changesArea" editable="false" layoutX="156.0" layoutY="319.0" prefHeight="100.0" prefWidth="603.0" />
+                  <TextArea fx:id="changesArea" editable="false" layoutX="156.0" layoutY="319.0" prefHeight="100.0" prefWidth="603.0" styleClass="boxtext" />
                   <Label layoutX="14.0" layoutY="63.0" text="Request handler:">
                      <font>
                         <Font size="24.0" />
